@@ -2,9 +2,9 @@
 const $ = (id) => document.getElementById(id);
 let role = "user";
 
-// 사업자 회사(브랜드) 선택지 = 등록된 브랜드 목록
+// 사업자 회사(브랜드): 직접 입력 + 기존 브랜드 자동완성(datalist)
 const BRANDS = [...new Set(PROMOS.map((p) => p.brand))].sort((a, b) => a.localeCompare(b, "ko"));
-$("suBrand").innerHTML = BRANDS.map((b) => `<option value="${b}">${b}</option>`).join("");
+$("brandOptions").innerHTML = BRANDS.map((b) => `<option value="${b}"></option>`).join("");
 
 document.querySelectorAll(".auth-tab").forEach((t) =>
   t.addEventListener("click", () => {
@@ -26,7 +26,11 @@ $("signupForm").addEventListener("submit", (e) => {
   if (users.some((u) => u.userId === id)) return err("이미 사용 중인 아이디입니다.");
 
   const acc = { role, name, userId: id, pw, email };
-  if (role === "business") acc.brand = $("suBrand").value;
+  if (role === "business") {
+    const brand = $("suBrand").value.trim();
+    if (!brand) return err("회사(브랜드)명을 입력하세요.");
+    acc.brand = brand;
+  }
 
   users.push(acc);
   window.AUTH.saveUsers(users);

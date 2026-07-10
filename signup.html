@@ -48,10 +48,11 @@
         </div>
         <!-- 사업자만 -->
         <div class="field" id="suBrandRow" hidden>
-          <label class="field__label" for="suBrand">회사(브랜드) <i>*</i>
-            <span class="field__hint">인텔리전스에서 이 브랜드 데이터만 보이게 됩니다.</span>
+          <label class="field__label" for="suBrand">회사(브랜드)명 <i>*</i>
+            <span class="field__hint">우리 회사/브랜드명을 직접 입력하세요. 인텔리전스에서 이 브랜드 데이터만 표시됩니다.</span>
           </label>
-          <select id="suBrand"></select>
+          <input type="text" id="suBrand" list="brandOptions" placeholder="예) 나이키" autocomplete="organization">
+          <datalist id="brandOptions"></datalist>
         </div>
         <p class="auth-err" id="suErr" hidden></p>
         <button type="submit" class="btn btn--primary btn--lg auth-submit">가입하고 시작하기</button>
