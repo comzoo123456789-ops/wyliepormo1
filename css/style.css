@@ -1031,6 +1031,32 @@ body.is-biz .js-biz { display: inline-flex; }
 .bh-first__t { font-size: 1.4rem; font-weight: 800; color: #fff; margin: 8px 0 4px; letter-spacing: -0.02em; }
 .bh-first__b { font-size: 0.85rem; color: rgba(255, 255, 255, 0.7); }
 .bh-empty { color: rgba(255, 255, 255, 0.6); }
+/* 탭이 많아질 때 가로 스크롤 허용 */
+.bh-tabs { overflow-x: auto; scrollbar-width: none; flex-wrap: nowrap; }
+.bh-tabs::-webkit-scrollbar { display: none; }
+.bh-tab { flex: 0 0 auto; white-space: nowrap; }
+.bh-demo { font-size: 0.62rem; font-weight: 700; color: #e6a58f; background: rgba(230, 165, 143, 0.14); padding: 2px 7px; border-radius: 5px; margin-left: 4px; vertical-align: middle; }
+
+/* 경쟁 위치 (SoV 게이지) */
+.bh-sov__big { font-family: "Noto Serif KR", serif; font-size: 2.6rem; font-weight: 700; color: #fff; line-height: 1; }
+.bh-sov__big span { font-size: 1.1rem; color: #e6a58f; margin-left: 3px; }
+.bh-gauge { height: 12px; background: rgba(255, 255, 255, 0.12); border-radius: 999px; overflow: hidden; margin: 16px 0 18px; }
+.bh-gauge span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #cf7a5f, #e6a58f); }
+.bh-sov__rows { display: flex; flex-direction: column; gap: 10px; }
+.bh-sov__rows > div { display: flex; justify-content: space-between; align-items: center; font-size: 0.88rem; color: rgba(255, 255, 255, 0.7); padding-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+.bh-sov__rows b { color: #fff; font-weight: 800; }
+.bh-up { color: #7fd0a5 !important; }
+.bh-down { color: #e6a58f !important; }
+
+/* 고객 연령대 분포 */
+.bh-ages { display: flex; flex-direction: column; gap: 12px; }
+.bh-age { display: grid; grid-template-columns: 42px 1fr 42px; align-items: center; gap: 12px; }
+.bh-age__l { font-size: 0.85rem; font-weight: 700; color: rgba(255, 255, 255, 0.85); }
+.bh-age__t { height: 12px; background: rgba(255, 255, 255, 0.12); border-radius: 999px; overflow: hidden; }
+.bh-age__t span { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #cf7a5f, #e6a58f); }
+.bh-age b { font-size: 0.85rem; font-weight: 800; color: #fff; text-align: right; }
+.bh-agerec { margin-top: 18px; font-size: 0.82rem; line-height: 1.5; color: rgba(255, 255, 255, 0.7); background: rgba(255, 255, 255, 0.06); border-radius: 10px; padding: 12px 14px; }
+.bh-agerec b { color: #fff; font-weight: 800; }
 
 /* ================= 주간 추이 ================= */
 .trend-wow { font-size: 0.95rem; color: var(--muted); margin-bottom: 16px; }
@@ -1153,6 +1179,9 @@ body.is-admin .js-admin { display: inline-flex; }
 .copy-ctr b { font-family: "Noto Serif KR", serif; font-size: 1.3rem; color: var(--accent); }
 .copy-ctr span { display: block; font-size: 0.68rem; color: var(--faint); }
 
+/* 헤더 햄버거 버튼 (데스크톱 숨김, 모바일에서 노출) */
+.hmenu { display: none; }
+
 /* ================= 반응형 ================= */
 @media (max-width: 1024px) {
   .hero__title { font-size: 2.5rem; }
@@ -1183,13 +1212,37 @@ body.is-admin .js-admin { display: inline-flex; }
   .quick .quick__label, .quick__label { flex: 0 0 auto; }
   .nav__subs { display: none; }        /* 모바일은 중분류 생략(대분류로 필터) */
   .content { padding: 0 16px; margin-top: 8px; }
+
+  /* 햄버거 버튼 노출 */
+  .hmenu {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 4px; width: 42px; height: 40px; flex-shrink: 0; margin-left: auto;
+    border: 1px solid var(--line); border-radius: 11px; background: var(--surface); cursor: pointer;
+  }
+  .hmenu span { width: 18px; height: 2px; background: var(--ink); border-radius: 2px; transition: transform 0.2s, opacity 0.2s; }
+  .hmenu.is-open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .hmenu.is-open span:nth-child(2) { opacity: 0; }
+  .hmenu.is-open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+  /* nav를 드롭다운 패널로 최소화 */
+  .header__nav {
+    position: absolute; top: 100%; right: 12px; left: 12px; margin-top: 6px;
+    display: none; flex-direction: column; align-items: stretch; gap: 2px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow-lg); padding: 10px;
+  }
+  body.nav-open .header__nav { display: flex; }
+  .header__nav .header__link { width: 100%; padding: 11px 12px; border-radius: 9px; }
+  .header__nav .header__link:hover { background: var(--surface-2); }
+  .header__nav .btn { width: 100%; justify-content: center; margin-top: 4px; }
+  .auth-area { flex-direction: column; align-items: stretch; gap: 2px; width: 100%; }
+  .auth-area .auth-name { padding: 9px 12px; }
+  .auth-area .header__link { border-top: 1px solid var(--line-2); }
 }
 @media (max-width: 680px) {
   .search { display: none; }
-  /* 헤더: 로고 왼쪽 / 로그인·회원가입 오른쪽, 한 줄 유지 */
-  .header__inner { height: auto; min-height: var(--header-h); flex-wrap: wrap; padding: 8px 16px; gap: 6px 10px; }
-  .header__nav { margin-left: auto; gap: 8px 12px; flex-wrap: wrap; justify-content: flex-end; }
-  .auth-area { gap: 12px; }
+  /* 헤더: 로고 왼쪽 / 햄버거 오른쪽 (nav는 드롭다운) */
+  .header__inner { height: var(--header-h); padding: 0 16px; gap: 12px; }
   .hero__inner { padding: 40px 20px 40px; }
   .hero__title { font-size: 1.9rem; line-height: 1.42; }
   .hero__br { display: none; }

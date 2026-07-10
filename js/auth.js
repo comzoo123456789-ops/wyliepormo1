@@ -48,3 +48,34 @@ window.AUTH = (function () {
   if (document.readyState !== "loading") apply();
   else document.addEventListener("DOMContentLoaded", apply);
 })();
+
+// ============================================================
+// 헤더 햄버거 메뉴 (모바일에서 nav를 드롭다운으로 최소화)
+// 모든 페이지 공통 — auth.js가 헤더를 관리하므로 여기서 주입
+// ============================================================
+(function hamburger() {
+  function build() {
+    const inner = document.querySelector(".header__inner");
+    const nav = document.querySelector(".header__nav");
+    if (!inner || !nav || inner.querySelector(".hmenu")) return;
+
+    const btn = document.createElement("button");
+    btn.className = "hmenu";
+    btn.setAttribute("aria-label", "메뉴 열기");
+    btn.setAttribute("aria-expanded", "false");
+    btn.innerHTML = "<span></span><span></span><span></span>";
+    inner.appendChild(btn);
+
+    const close = () => { document.body.classList.remove("nav-open"); btn.classList.remove("is-open"); btn.setAttribute("aria-expanded", "false"); };
+    const toggle = () => { const open = !document.body.classList.contains("nav-open"); document.body.classList.toggle("nav-open", open); btn.classList.toggle("is-open", open); btn.setAttribute("aria-expanded", String(open)); };
+
+    btn.addEventListener("click", (e) => { e.stopPropagation(); toggle(); });
+    // 링크/버튼 누르면 닫기
+    nav.addEventListener("click", (e) => { if (e.target.closest("a,button")) close(); });
+    // 바깥 클릭 / ESC 로 닫기
+    document.addEventListener("click", (e) => { if (document.body.classList.contains("nav-open") && !nav.contains(e.target) && e.target !== btn) close(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+  }
+  if (document.readyState !== "loading") build();
+  else document.addEventListener("DOMContentLoaded", build);
+})();
