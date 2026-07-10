@@ -846,6 +846,32 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .matrix td.matrix__sum { font-weight: 800; color: var(--ink); background: var(--surface-2); }
 .rep-note { font-size: 0.78rem; color: var(--faint); line-height: 1.6; margin-top: 24px; }
 
+/* 핵심 인사이트 */
+.insight-list { display: flex; flex-direction: column; gap: 11px; }
+.insight-list li { font-size: 0.92rem; line-height: 1.6; color: var(--ink-2); padding-left: 22px; position: relative; }
+.insight-list li::before { content: "▹"; position: absolute; left: 0; color: var(--accent); font-weight: 800; }
+.insight-list b { color: var(--ink); font-weight: 800; }
+
+/* B2B 판매 섹션 */
+.rep-b2b { background: var(--dark); color: #fff; border-radius: 20px; padding: 44px 36px; margin-top: 26px; }
+.rep-b2b__eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; color: #e6a58f; }
+.rep-b2b__title { font-family: "Noto Serif KR", serif; font-size: 1.9rem; font-weight: 600; margin: 12px 0; letter-spacing: -0.01em; }
+.rep-b2b__sub { color: rgba(255, 255, 255, 0.7); line-height: 1.7; font-size: 0.95rem; }
+.rep-tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 32px 0 26px; }
+.tier { position: relative; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 14px; padding: 26px 22px; }
+.tier--hot { border-color: var(--accent); background: rgba(181, 86, 59, 0.16); }
+.tier__badge { position: absolute; top: -11px; left: 22px; background: var(--accent); color: #fff; font-size: 0.68rem; font-weight: 700; padding: 3px 11px; border-radius: 999px; }
+.tier__name { font-size: 0.95rem; font-weight: 700; }
+.tier__price { font-family: "Noto Serif KR", serif; font-size: 1.7rem; font-weight: 600; margin: 8px 0 18px; }
+.tier__price span { font-size: 0.82rem; font-family: Pretendard, sans-serif; color: rgba(255, 255, 255, 0.55); font-weight: 500; }
+.tier ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+.tier li { font-size: 0.85rem; color: rgba(255, 255, 255, 0.82); padding-left: 19px; position: relative; line-height: 1.45; }
+.tier li::before { content: "✓"; position: absolute; left: 0; color: #8fce9f; font-weight: 800; }
+.rep-b2b__cta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.rep-b2b__cta .btn--primary { background: #fff; color: var(--ink); }
+.rep-b2b__cta .btn--primary:hover { background: #f0efec; }
+.rep-b2b__note { font-size: 0.82rem; color: rgba(255, 255, 255, 0.55); }
+
 /* ================= 반응형 ================= */
 @media (max-width: 1024px) {
   .hero__title { font-size: 2.5rem; }
@@ -853,6 +879,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .hero__feature { max-width: 640px; }
   .rep-kpis { grid-template-columns: repeat(3, 1fr); }
   .rep-grid { grid-template-columns: 1fr; }
+  .rep-tiers { grid-template-columns: 1fr; }
   .wrap { grid-template-columns: 200px 1fr; gap: 28px; }
 }
 /* 좁은 화면: 사이드바를 상단 고정 가로 바로 전환 */

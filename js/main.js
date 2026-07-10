@@ -34,13 +34,22 @@ function saveLikes(set) { try { localStorage.setItem(LS_LIKES, JSON.stringify([.
 function loadMine() { try { return JSON.parse(localStorage.getItem(LS_MINE) || "[]"); } catch (e) { return []; } }
 const liked = loadLikes();
 
-// ---------- 데이터 병합 (기본 + 사용자 등록) ----------
-const ALL = PROMOS.concat(
-  loadMine().map((p, i) => ({
+// ---------- 데이터 병합 (정적 + 서버 D1 + 로컬 등록) ----------
+let ALL = [];
+function buildAll(server) {
+  const mine = loadMine().map((p, i) => ({
     ...p, id: p.id || 9000 + i, isMine: true,
     likes: p.likes ?? 3, views: p.views ?? 12, posted: p.posted || TODAY_STR,
-  }))
-);
+  }));
+  const srv = (Array.isArray(server) ? server : []).map((p) => ({
+    ...p, likes: p.likes ?? 4, views: p.views ?? 18, posted: p.posted || TODAY_STR,
+  }));
+  const merged = PROMOS.concat(srv, mine);
+  const seen = new Set();
+  ALL = [];
+  for (const p of merged) if (!seen.has(p.id)) { seen.add(p.id); ALL.push(p); }
+}
+buildAll([]);
 const likeCount = (p) => (p.likes || 0) + (liked.has(p.id) ? 1 : 0);
 
 // ---------- 상태 ----------
@@ -360,3 +369,17 @@ renderTypebar();
 renderGrid();
 renderHotroll();
 hotAuto();
+
+// 서버(D1) 프로모션 병합 — 배포 환경에서만 동작, 실패/빈값이면 정적 데이터 유지
+fetch("/api/promotions")
+  .then((r) => (r.ok ? r.json() : null))
+  .then((rows) => {
+    if (Array.isArray(rows) && rows.length) {
+      buildAll(rows);
+      renderStats();
+      renderQuickbar();
+      renderGrid();
+      renderHotroll();
+    }
+  })
+  .catch(() => {});

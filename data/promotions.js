@@ -368,6 +368,48 @@ const PROMOS = [
     title: "에뛰드 컬러 메이크업 세일",
     desc: "플레이컬러 아이즈·립 등 컬러 메이크업 시즌 세일.",
     period: { start: "2026-07-01", end: "2026-07-20" }, posted: "2026-07-09", link: "https://www.etude.com/kr/ko/" },
+
+  // ===== 대중 브랜드 보강 (다나와 카테고리 · 스포츠/가전/PC/디지털) =====
+  { id: 80, type: "brand", group: "fashion", sub: "패션잡화", promoType: "sale", brand: "나이키",
+    title: "나이키 여름 시즌 세일 · 멤버 특가",
+    desc: "러닝·라이프스타일 스니커즈와 애슬레저 시즌 세일. 나이키 멤버 단독 혜택.",
+    period: { start: "2026-07-01", end: "2026-07-25" }, posted: "2026-07-09", link: "https://www.nike.com/kr/" },
+  { id: 81, type: "brand", group: "fashion", sub: "패션잡화", promoType: "sale", brand: "아디다스",
+    title: "아디다스 여름 세일 최대 50%",
+    desc: "삼바·가젤 등 인기 스니커즈와 트레이닝 웨어 시즌오프.",
+    period: { start: "2026-07-01", end: "2026-07-25" }, posted: "2026-07-09", link: "https://www.adidas.co.kr/" },
+  { id: 82, type: "brand", group: "fashion", sub: "남성의류", promoType: "sale", brand: "뉴발란스",
+    title: "뉴발란스 여름 시즌오프",
+    desc: "992·530 등 인기 스니커즈와 의류 시즌오프 할인.",
+    period: { start: "2026-07-01", end: "2026-07-20" }, posted: "2026-07-09", link: "https://www.nbkorea.com/" },
+  { id: 83, type: "brand", group: "tech", sub: "스마트폰/주변기기", promoType: "sale", brand: "샤오미",
+    title: "샤오미 스마트기기 여름 특가",
+    desc: "로봇청소기·보조배터리·웨어러블 등 가성비 스마트기기 특가.",
+    period: { start: "2026-07-01", end: "2026-07-31" }, posted: "2026-07-09", link: "https://www.mi.com/kr/" },
+  { id: 84, type: "brand", group: "tech", sub: "노트북/PC", promoType: "launch", brand: "ASUS",
+    title: "ASUS 게이밍·노트북 신제품 프로모션",
+    desc: "ROG 게이밍 노트북·젠북 신제품 출시 기념 사은 혜택.",
+    period: { start: "2026-07-01", end: "2026-07-31" }, posted: "2026-07-09", link: "https://www.asus.com/kr/" },
+  { id: 85, type: "brand", group: "tech", sub: "노트북/PC", promoType: "sale", brand: "레노버",
+    title: "레노버 노트북 여름 세일",
+    desc: "씽크패드·아이디어패드·리전 게이밍 노트북 여름 할인.",
+    period: { start: "2026-07-01", end: "2026-07-31" }, posted: "2026-07-09", link: "https://www.lenovo.com/kr/ko/" },
+  { id: 86, type: "brand", group: "appliance", sub: "생활가전", promoType: "gift", brand: "SK매직",
+    title: "SK매직 렌탈 신규가입 사은품",
+    desc: "정수기·식기세척기·비데 렌탈 신규 가입 시 상품권·사은품 증정.",
+    period: { start: "2026-07-01", end: "2026-07-31" }, posted: "2026-07-09", link: "https://www.skmagic.com/" },
+  { id: 87, type: "brand", group: "appliance", sub: "주방가전", promoType: "sale", brand: "쿠첸",
+    title: "쿠첸 밥솥 여름 특가",
+    desc: "IH 압력밥솥·인덕션 여름 시즌 할인과 구매 사은 혜택.",
+    period: { start: "2026-07-01", end: "2026-07-31" }, posted: "2026-07-09", link: "https://www.cuchen.com/" },
+  { id: 88, type: "brand", group: "tech", sub: "스마트폰/주변기기", promoType: "sale", brand: "앤커",
+    title: "앤커(Anker) 충전기·보조배터리 세일",
+    desc: "고속 충전기·파워뱅크·케이블 등 앤커 인기 제품 할인.",
+    period: { start: "2026-07-01", end: "2026-07-20" }, posted: "2026-07-09", link: "https://www.ankerkorea.com/" },
+  { id: 89, type: "brand", group: "tech", sub: "스마트폰/주변기기", promoType: "launch", brand: "닌텐도",
+    title: "닌텐도 스위치 신작·번들 프로모션",
+    desc: "닌텐도 스위치 신작 타이틀과 본체 번들 프로모션.",
+    period: { start: "2026-07-08", end: "2026-07-31" }, posted: "2026-07-09", link: "https://www.nintendo.co.kr/" },
 ];
 
 // 각 브랜드 공식 페이지에서 추출한 대표 이미지(og:image). 로드 실패 시 모노그램으로 자동 대체.
@@ -440,6 +482,15 @@ const PROMO_IMAGES = {
   76: "https://sui.ssgcdn.com/ui/common/img/sns/ssg.png",
   77: "https://static1.e-himart.co.kr/resources/layout/images/common/og_tag.png",
   // 78 아리따움, 79 에뛰드: og 저품질 → 모노그램
+  80: "https://static.nike.com/a/images/w_1920,c_limit/wzrqsjqpg6pslrevtkpl/image.png",
+  // 81 아디다스: 봇차단 → 모노그램
+  82: "https://image.nbkorea.com/NBRB_Site/20210414/NB20210414142904347001.jpg",
+  83: "https://i01.appmifile.com/webfile/globalimg/mobile/logo/mi.png",
+  84: "https://dlcdnimgs.asus.com/websites/global/Sno/79183.jpg",
+  // 85 레노버, 88 앤커: og 미확보 → 모노그램
+  86: "https://static.skmagic.com/pc/asset/images/common/logo.jpg",
+  87: "https://www.cuchen.com/img/1200.png",
+  89: "https://www.nintendo.co.kr/sns.png",
 };
 
 // 전시용 지표 시드(실서비스에선 서버 집계값). id 기반 결정적 계산으로 매번 동일.

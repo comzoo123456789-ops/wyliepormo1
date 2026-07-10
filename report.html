@@ -35,6 +35,13 @@
     <!-- KPI -->
     <section class="rep-kpis" id="repKpis"><!-- JS --></section>
 
+    <!-- 핵심 인사이트 (자동 분석) -->
+    <section class="rep-card rep-card--wide">
+      <h2 class="rep-card__title">핵심 인사이트</h2>
+      <p class="rep-card__desc">집계 데이터에서 자동 추출한 이번 주 요약</p>
+      <ul class="insight-list" id="repInsight"><!-- JS --></ul>
+    </section>
+
     <div class="rep-grid">
       <!-- 카테고리별 -->
       <section class="rep-card">
@@ -70,6 +77,52 @@
       <h2 class="rep-card__title">카테고리 × 프로모션 유형 매트릭스</h2>
       <p class="rep-card__desc">어떤 카테고리가 어떤 방식으로 프로모션하는지 (진한 색일수록 많음)</p>
       <div class="matrix-wrap"><table class="matrix" id="chartMatrix"><!-- JS --></table></div>
+    </section>
+
+    <!-- ===== B2B 리포트 판매 ===== -->
+    <section class="rep-b2b">
+      <div class="rep-b2b__head">
+        <span class="rep-b2b__eyebrow">FOR BUSINESS</span>
+        <h2 class="rep-b2b__title">이 데이터, 리포트로 받아보세요</h2>
+        <p class="rep-b2b__sub">브랜드 마케터·에이전시·리테일 MD를 위한 프로모션 인텔리전스.<br />경쟁사가 지금 어떤 혜택으로 싸우는지 데이터로 확인하세요.</p>
+      </div>
+      <div class="rep-tiers">
+        <div class="tier">
+          <div class="tier__name">주간 트렌드 리포트</div>
+          <div class="tier__price">₩99,000<span>/회</span></div>
+          <ul>
+            <li>카테고리·유형·할인율 주간 추이</li>
+            <li>인기 브랜드 TOP 20</li>
+            <li>신규·종료 프로모션 목록</li>
+            <li>PDF 1부</li>
+          </ul>
+        </div>
+        <div class="tier tier--hot">
+          <div class="tier__badge">가장 인기</div>
+          <div class="tier__name">월간 심층 리포트</div>
+          <div class="tier__price">₩390,000<span>/월</span></div>
+          <ul>
+            <li>주간 리포트 4회 포함</li>
+            <li>경쟁사 브랜드 비교 분석</li>
+            <li>시즌·프로모션 유형 효과 분석</li>
+            <li>카테고리 진입 타이밍 제안</li>
+          </ul>
+        </div>
+        <div class="tier">
+          <div class="tier__name">실시간 대시보드</div>
+          <div class="tier__price">₩990,000<span>/월</span></div>
+          <ul>
+            <li>실시간 프로모션 모니터링</li>
+            <li>경쟁사 알림(신규·마감)</li>
+            <li>맞춤 카테고리·브랜드 세그먼트</li>
+            <li>데이터 API 제공</li>
+          </ul>
+        </div>
+      </div>
+      <div class="rep-b2b__cta">
+        <a class="btn btn--primary btn--lg" href="mailto:sales@promoboard.example?subject=프로모션%20인텔리전스%20리포트%20문의">리포트 문의하기 →</a>
+        <span class="rep-b2b__note">샘플 리포트 무료 제공 · 맞춤 견적 가능</span>
+      </div>
     </section>
 
     <p class="rep-note">※ 본 리포트는 프로모보드에 집계된 프로모션 데이터를 기반으로 자동 생성됩니다. (전시용 지표 포함) — 실서비스에서는 실시간 조회·클릭·전환 데이터로 산출됩니다.</p>

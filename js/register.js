@@ -184,6 +184,13 @@ form.addEventListener("submit", (e) => {
     localStorage.setItem(LS_MINE, JSON.stringify(list));
   } catch (e2) { return showErr("저장 중 오류가 발생했습니다."); }
 
+  // 서버(D1)에도 저장 시도 (배포 환경) — 실패해도 로컬 저장은 유지
+  fetch("/api/promotions", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(promo),
+  }).catch(() => {});
+
   form.hidden = true; $banner.hidden = true; $done.hidden = false;
   window.scrollTo({ top: 0, behavior: "smooth" });
   setTimeout(() => (location.href = "index.html"), 1600);

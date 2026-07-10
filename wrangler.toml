@@ -6,3 +6,18 @@ compatibility_date = "2026-01-01"
 [assets]
 directory = "."
 binding = "ASSETS"
+
+# ─────────────────────────────────────────────────────────────
+# 자동수집 백엔드(D1)를 켜려면 아래 주석을 해제하세요.
+#   1) npx wrangler d1 create promoboard   → 출력된 database_id 를 아래에 입력
+#   2) npx wrangler d1 execute promoboard --file=schema.sql --remote
+#   3) 커밋·push (자동 배포)
+# D1을 켜기 전에는 사이트가 정적 데이터로 정상 동작합니다.
+# ─────────────────────────────────────────────────────────────
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "promoboard"
+# database_id = "여기에_d1_create_로_나온_id"
+#
+# [triggers]
+# crons = ["0 18 * * *"]   # 매일 03:00 KST 만료 프로모션 자동 삭제

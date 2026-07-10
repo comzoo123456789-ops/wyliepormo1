@@ -34,6 +34,43 @@ const brandGroups = CATEGORIES.brand.groups;
   $("repAsOf").textContent = `기준일 ${TODAY_STR} · 집계 프로모션 ${P.length}건 · 참여 브랜드 ${brands}곳`;
 })();
 
+// ---------- 핵심 인사이트 (자동 분석) ----------
+(function insights() {
+  const label = (id) => (brandGroups.find((g) => g.id === id) || {}).label || id;
+  const count = (pred) => P.filter(pred).length;
+
+  // 카테고리별 건수
+  const catCount = {};
+  P.filter((p) => p.type === "brand").forEach((p) => (catCount[p.group] = (catCount[p.group] || 0) + 1));
+  const topCat = Object.entries(catCount).sort((a, b) => b[1] - a[1])[0];
+
+  // 유형별 건수
+  const typeCount = {};
+  P.forEach((p) => (typeCount[p.promoType] = (typeCount[p.promoType] || 0) + 1));
+  const topType = Object.entries(typeCount).sort((a, b) => b[1] - a[1])[0];
+  const typeLabel = (k) => (PROMO_TYPES[k] || {}).label || k;
+
+  // 평균/최고 할인율
+  const discs = P.filter((p) => p.discount).map((p) => p.discount);
+  const avgDisc = discs.length ? Math.round(discs.reduce((a, b) => a + b, 0) / discs.length) : 0;
+  const catDisc = {};
+  P.forEach((p) => { if (p.discount) (catDisc[p.group] = catDisc[p.group] || []).push(p.discount); });
+  const catDiscAvg = Object.entries(catDisc).map(([g, arr]) => [g, Math.round(arr.reduce((a, b) => a + b, 0) / arr.length)]).sort((a, b) => b[1] - a[1])[0];
+
+  const todayNew = count((p) => p.posted === TODAY_STR);
+  const endingSoon = count((p) => { const d = Math.round((new Date(p.period.end) - TODAY) / 86400000); return d >= 0 && d <= 3; });
+  const couponCnt = count((p) => p.code);
+
+  const items = [];
+  if (topCat) items.push(`지금 가장 활발한 카테고리는 <b>${label(topCat[0])}</b> — 진행 프로모션 <b>${topCat[1]}건</b>으로 최다입니다.`);
+  if (topType) items.push(`가장 많이 쓰이는 혜택 방식은 <b>${typeLabel(topType[0])}</b>(${topType[1]}건). 브랜드들이 이 방식으로 경쟁하고 있습니다.`);
+  if (avgDisc) items.push(`할인형 프로모션의 <b>평균 할인율은 ${avgDisc}%</b>${catDiscAvg ? `, 그중 <b>${label(catDiscAvg[0])}</b>가 평균 ${catDiscAvg[1]}%로 가장 공격적입니다.` : "."}`);
+  items.push(`이번 주 <b>신규 ${todayNew}건</b>이 등록됐고, <b>마감 임박(D-3 이내) ${endingSoon}건</b>이 진행 중 — 지금이 노출 경쟁이 치열한 구간입니다.`);
+  if (couponCnt) items.push(`쿠폰 코드를 제공하는 프로모션이 <b>${couponCnt}건</b> — 전환 유도형 혜택이 활성화돼 있습니다.`);
+
+  document.getElementById("repInsight").innerHTML = items.map((t) => `<li>${t}</li>`).join("");
+})();
+
 // ---------- 막대 헬퍼 ----------
 function barRow(label, value, max, color, suffix) {
   const pct = max ? Math.round((value / max) * 100) : 0;

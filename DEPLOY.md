@@ -43,6 +43,24 @@ npx wrangler pages secret put ANTHROPIC_API_KEY --project-name promoboard
 
 ---
 
+## 5. 자동수집 백엔드 (D1 DB) — 선택
+프로모션을 서버 DB에 저장하고, 만료된 건 자동 삭제하려면:
+```bash
+# 1) D1 생성 → 출력된 database_id 복사
+npx wrangler d1 create promoboard
+
+# 2) wrangler.toml 의 REPLACE_WITH_YOUR_D1_ID 를 위 id 로 교체
+
+# 3) 스키마 적용
+npx wrangler d1 execute promoboard --file=schema.sql --remote
+
+# 4) 커밋 후 push (자동 배포)
+```
+- `GET /api/promotions` : 저장된(미만료) 프로모션 목록 → 사이트가 정적 데이터와 **병합** 표시
+- `POST /api/promotions` : 등록 폼이 이 API로도 저장 (서버 영속화)
+- **Cron(매일 03:00 KST)**: `end_date` 지난 프로모션 **자동 삭제**
+- D1을 설정하지 않아도 사이트는 정상 동작(정적 데이터만 사용).
+
 ## 동작 방식
 - 등록폼에서 URL 입력 → 브라우저가 `/api/analyze` 로 POST
 - Cloudflare 함수가 **서버에서** 그 URL을 읽어(브라우저 CORS 없음) 본문·메타를 뽑고 → Claude API 호출 → 구조화 JSON 반환
