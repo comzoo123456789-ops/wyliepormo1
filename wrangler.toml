@@ -1,3 +1,8 @@
-name = "promoboard"
-pages_build_output_dir = "."
+name = "wyliepormo1"
+main = "worker.js"
 compatibility_date = "2026-01-01"
+
+# 정적 파일(index.html, css, js, data, register.html, report.html 등)을 서빙
+[assets]
+directory = "."
+binding = "ASSETS"
