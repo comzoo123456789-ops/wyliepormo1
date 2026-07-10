@@ -11,14 +11,14 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&display=swap" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
+<body data-require="business">
   <header class="header">
     <div class="header__inner">
       <a href="index.html" class="logo"><span class="logo__dot"></span>promoboard</a>
       <nav class="header__nav">
         <a href="index.html" class="header__link">프로모션</a>
-        <a href="report.html" class="header__link">인텔리전스</a>
-        <a href="#" class="header__link" id="coLogout" hidden>로그아웃</a>
+        <a href="report.html" class="header__link js-biz">인텔리전스</a>
+        <span id="authArea" class="auth-area"></span>
       </nav>
     </div>
   </header>
@@ -32,19 +32,7 @@
   </section>
 
   <main class="co">
-    <!-- 로그인(데모: 브랜드 선택) -->
-    <section class="co-login" id="coLogin">
-      <div class="co-login__card">
-        <h2>기업 로그인 <span class="co-demo">데모</span></h2>
-        <p>실제 서비스에서는 사업자 인증 로그인. 지금은 데모로 브랜드를 선택하면 해당 브랜드의 인텔리전스가 나옵니다.</p>
-        <div class="co-login__row">
-          <select id="coBrandSelect"></select>
-          <button class="btn btn--primary btn--lg" id="coEnter">데이터 보기 →</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- 대시보드 -->
+    <!-- 대시보드 (사업자 본인 브랜드 전용) -->
     <section id="coDash" hidden>
       <div class="co-head">
         <span class="co-avatar" id="coAvatar"></span>
@@ -52,7 +40,6 @@
           <div class="co-name" id="coName"></div>
           <div class="co-groups" id="coGroups"></div>
         </div>
-        <button class="btn btn--soft" id="coSwitch">브랜드 변경</button>
       </div>
 
       <!-- 제품군(카테고리) 필터 -->
@@ -95,6 +82,7 @@
   <script src="js/icons.js"></script>
   <script src="data/categories.js"></script>
   <script src="data/promotions.js"></script>
+  <script src="js/auth.js"></script>
   <script src="js/company.js"></script>
 </body>
 </html>

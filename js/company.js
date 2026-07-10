@@ -36,7 +36,6 @@ function brandSubs(b) {
 }
 
 const state = { brand: null, sub: "all" };
-const KEY = "pb_company_brand";
 
 // ---------- 지표 계산 (데모) ----------
 function metrics(brand, sub) {
@@ -61,10 +60,13 @@ function metrics(brand, sub) {
   const totalV = Object.values(byBrand).reduce((a, b) => a + b, 0) || 1;
   const mine = byBrand[brand] || 0;
   const share = (mine / totalV) * 100;
-  const competitors = Object.entries(byBrand).map(([b, v]) => ({ brand: b, share: (v / totalV) * 100 }))
-    .sort((a, b) => b.share - a.share).slice(0, 6);
+  // 경쟁사 "식별정보"는 노출하지 않음 — 우리 위치만(순위·평균 대비)
+  const sharesArr = Object.keys(byBrand).map((b) => (byBrand[b] / totalV) * 100);
+  const total = sharesArr.length;
+  const rank = sharesArr.filter((s) => s > share).length + 1;
+  const avgShare = total ? 100 / total : 0;
 
-  return { visitors, ages, totalClicks, avgCtr, share, competitors, primGid: prim.gid, primType: prim.type };
+  return { visitors, ages, totalClicks, avgCtr, share, rank, total, avgShare, primGid: prim.gid, primType: prim.type };
 }
 
 // ---------- 렌더 ----------
@@ -106,16 +108,18 @@ function renderDash() {
       <td class="co-age__bar"><span style="width:${Math.round((a.visitors / maxV) * 100)}%;background:${g.ink}"></span></td>
     </tr>`).join("") + `</tbody>`;
 
-  // SoV
-  $("coSovDesc").textContent = `${groupLabel(m.primType, m.primGid)} 카테고리 내 노출 점유율`;
-  const maxS = Math.max(...m.competitors.map((c) => c.share), 1);
-  $("coSov").innerHTML = m.competitors.map((c, i) => `
-    <div class="rankrow ${c.brand === b ? "co-me" : ""}">
-      <span class="rankrow__no ${i < 3 ? "is-top" : ""}">${i + 1}</span>
-      <span class="rankrow__name">${c.brand}${c.brand === b ? " (우리)" : ""}</span>
-      <span class="rankrow__bar"><span style="width:${Math.round((c.share / maxS) * 100)}%"></span></span>
-      <span class="rankrow__val">${c.share.toFixed(1)}%</span>
-    </div>`).join("");
+  // 우리 위치 (경쟁사 식별정보 미노출)
+  $("coSovDesc").textContent = `${groupLabel(m.primType, m.primGid)} 카테고리 내 우리 브랜드 위치`;
+  const above = m.share >= m.avgShare;
+  $("coSov").innerHTML = `
+    <div class="co-pos">
+      <div class="co-pos__share">${m.share.toFixed(1)}<span>%</span></div>
+      <div class="co-pos__rows">
+        <div><span>카테고리 내 순위</span><b>${m.rank}위 / ${m.total}개 브랜드</b></div>
+        <div><span>카테고리 평균 점유율</span><b>${m.avgShare.toFixed(1)}%</b></div>
+        <div><span>평가</span><b class="${above ? "co-up" : "co-down"}">${above ? "평균 이상 ▲" : "평균 이하 ▼"}</b></div>
+      </div>
+    </div>`;
 
   // 내 프로모션 목록 (제품군 필터 적용)
   let mine = brandPromos(b);
@@ -131,21 +135,26 @@ function renderDash() {
   $("coNote").textContent = "※ 유입·클릭·연령대는 데모(시뮬레이션) 지표입니다. 실제 서비스에서는 클릭 로깅과 로그인 인구통계 데이터로 산출됩니다. 유입 점유율은 집계된 조회수 기반으로 계산됩니다.";
 }
 
-function enter(brand) {
-  state.brand = brand; state.sub = "all";
-  try { localStorage.setItem(KEY, brand); } catch (e) {}
-  $("coLogin").hidden = true;
-  $("coDash").hidden = false;
-  $("coLogout").hidden = false;
-  renderDash();
-}
-
 // ---------- 이벤트 ----------
-$("coBrandSelect").innerHTML = BRANDS.map((b) => `<option value="${b}">${b}</option>`).join("");
-$("coEnter").addEventListener("click", () => enter($("coBrandSelect").value));
-$("coSwitch").addEventListener("click", () => { $("coDash").hidden = true; $("coLogin").hidden = false; $("coLogout").hidden = true; });
-$("coLogout").addEventListener("click", (e) => { e.preventDefault(); try { localStorage.removeItem(KEY); } catch (x) {} $("coSwitch").click(); });
 $("coSubs").addEventListener("click", (e) => { const c = e.target.closest(".co-chip"); if (!c) return; state.sub = c.dataset.sub; renderDash(); });
 
-// 이전에 본 브랜드 복원
-try { const saved = localStorage.getItem(KEY); if (saved && BRANDS.includes(saved)) { $("coBrandSelect").value = saved; enter(saved); } } catch (e) {}
+// ---------- 인증: 로그인한 사업자 브랜드만 ----------
+const auth = window.AUTH && window.AUTH.get();
+if (!auth || auth.role !== "business" || !auth.brand) {
+  // (auth.js 가드가 리다이렉트하지만 이중 안전장치)
+  location.href = "login.html";
+} else if (!BRANDS.includes(auth.brand)) {
+  // 로그인 브랜드가 아직 등록 프로모션이 없는 경우
+  $("coDash").hidden = false;
+  $("coAvatar").textContent = auth.brand.trim().charAt(0);
+  $("coName").textContent = auth.brand;
+  $("coGroups").textContent = "아직 집계된 프로모션이 없습니다.";
+  $("coKpis").innerHTML = "";
+  $("coPromos").innerHTML = '<p class="rep-empty">이 브랜드로 등록된 프로모션이 아직 없어 인텔리전스가 없습니다. 프로모션을 등록하면 생성됩니다.</p>';
+  $("coNote").textContent = "";
+} else {
+  state.brand = auth.brand;
+  state.sub = "all";
+  $("coDash").hidden = false;
+  renderDash();
+}

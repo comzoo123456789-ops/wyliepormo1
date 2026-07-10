@@ -11,14 +11,14 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&display=swap" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
+<body data-require="business">
   <header class="header">
     <div class="header__inner">
       <a href="index.html" class="logo"><span class="logo__dot"></span>promoboard</a>
       <nav class="header__nav">
         <a href="index.html" class="header__link">← 프로모션 목록</a>
-        <a href="company.html" class="header__link">기업센터</a>
-        <a href="register.html" class="btn btn--primary">프로모션 등록</a>
+        <a href="company.html" class="header__link js-biz">기업센터</a>
+        <span id="authArea" class="auth-area"></span>
       </nav>
     </div>
   </header>
@@ -146,6 +146,7 @@
   <script src="js/icons.js"></script>
   <script src="data/categories.js"></script>
   <script src="data/promotions.js"></script>
+  <script src="js/auth.js"></script>
   <script src="js/report.js"></script>
 </body>
 </html>

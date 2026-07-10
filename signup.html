@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>회원가입 · 프로모보드</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&display=swap" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="header__inner">
+      <a href="index.html" class="logo"><span class="logo__dot"></span>promoboard</a>
+      <nav class="header__nav"><a href="index.html" class="header__link">← 홈</a></nav>
+    </div>
+  </header>
+
+  <main class="auth-page">
+    <div class="auth-card">
+      <h1 class="auth-card__title">회원가입</h1>
+      <p class="auth-card__sub">회원 유형을 선택하세요.</p>
+
+      <div class="auth-tabs">
+        <button class="auth-tab is-active" data-role="user">👤 일반회원</button>
+        <button class="auth-tab" data-role="business">🏢 사업자회원</button>
+      </div>
+
+      <form id="signupForm" novalidate>
+        <div class="field">
+          <label class="field__label" for="suName">이름 <i>*</i></label>
+          <input type="text" id="suName" required>
+        </div>
+        <div class="field">
+          <label class="field__label" for="suId">아이디 <i>*</i></label>
+          <input type="text" id="suId" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label class="field__label" for="suPw">패스워드 <i>*</i></label>
+          <input type="password" id="suPw" autocomplete="new-password" required>
+        </div>
+        <div class="field">
+          <label class="field__label" for="suEmail">이메일 <i>*</i></label>
+          <input type="email" id="suEmail" required>
+        </div>
+        <!-- 사업자만 -->
+        <div class="field" id="suBrandRow" hidden>
+          <label class="field__label" for="suBrand">회사(브랜드) <i>*</i>
+            <span class="field__hint">인텔리전스에서 이 브랜드 데이터만 보이게 됩니다.</span>
+          </label>
+          <select id="suBrand"></select>
+        </div>
+        <p class="auth-err" id="suErr" hidden></p>
+        <button type="submit" class="btn btn--primary btn--lg auth-submit">가입하고 시작하기</button>
+      </form>
+
+      <p class="auth-alt">이미 회원이신가요? <a href="login.html">로그인</a></p>
+    </div>
+  </main>
+
+  <script src="data/categories.js"></script>
+  <script src="data/promotions.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/signup.js"></script>
+</body>
+</html>
