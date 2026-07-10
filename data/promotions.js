@@ -328,6 +328,46 @@ const PROMOS = [
     title: "TCL QD-Mini LED TV 프로모션",
     desc: "가성비 QD-Mini LED·QLED TV와 사운드바 신제품 프로모션.",
     period: { start: "2026-07-01", end: "2026-07-31" }, posted: "2026-07-09", link: "https://www.tcl.com/kr" },
+
+  // ===== 오픈마켓 · 종합 쇼핑 플랫폼 =====
+  { id: 71, type: "brand", group: "appliance", sub: "대형가전", promoType: "sale", brand: "G마켓",
+    title: "G마켓 빅스마일데이 · 종합 쇼핑 대축제",
+    desc: "가전·디지털부터 생필품까지 최대 60% 할인, 20만원 할인쿠폰 등 전 카테고리 특가.",
+    period: { start: "2026-07-01", end: "2026-07-15" }, posted: "2026-07-09", link: "https://www.gmarket.co.kr/" },
+  { id: 72, type: "brand", group: "appliance", sub: "대형가전", promoType: "sale", brand: "옥션",
+    title: "옥션 빅스마일데이 쇼핑 축제",
+    desc: "옥션 최대 규모 쇼핑 축제. 가전·생활 전 카테고리 특가와 스마일클럽 추가 혜택.",
+    period: { start: "2026-07-01", end: "2026-07-15" }, posted: "2026-07-09", link: "https://www.auction.co.kr/" },
+  { id: 73, type: "brand", group: "tech", sub: "스마트폰/주변기기", promoType: "coupon", brand: "11번가",
+    title: "11번가 월간 십일절 · 장바구니 쿠폰",
+    desc: "매월 1~11일 십일절. 대표 최저가 상품과 장바구니 할인쿠폰을 한 번에.",
+    period: { start: "2026-07-01", end: "2026-07-11" }, posted: "2026-07-09", link: "https://www.11st.co.kr/display-view/pc/main/billboard" },
+  { id: 74, type: "brand", group: "food", sub: "신선식품", promoType: "coupon", brand: "네이버쇼핑",
+    title: "네이버플러스 멤버십 적립·장보기 혜택",
+    desc: "네이버플러스 멤버십 적립과 도착보장·장보기 기획전. 멤버십 회원 추가 적립.",
+    period: { start: "2026-07-01", end: "2026-07-31" }, posted: "2026-07-09", link: "https://shopping.naver.com/ns/home" },
+
+  // ===== 카테고리 보강 (인기 브랜드) =====
+  { id: 75, type: "brand", group: "fashion", sub: "여성의류", promoType: "sale", brand: "에이블리",
+    title: "에이블리 여름 시즌오프 · 앱 전용 쿠폰",
+    desc: "여성 패션 플랫폼 에이블리 여름 세일. 신규 가입 쿠폰과 무료배송 혜택.",
+    period: { start: "2026-07-01", end: "2026-07-20" }, posted: "2026-07-09", link: "https://www.a-bly.com/" },
+  { id: 76, type: "brand", group: "food", sub: "신선식품", promoType: "coupon", brand: "SSG닷컴",
+    title: "SSG닷컴 쓱데이 · 장보기 특가",
+    desc: "신세계 SSG닷컴 신선식품·새벽배송 특가와 쓱세일 쿠폰.",
+    period: { start: "2026-07-01", end: "2026-07-31" }, posted: "2026-07-09", link: "https://www.ssg.com/" },
+  { id: 77, type: "brand", group: "appliance", sub: "대형가전", promoType: "sale", brand: "롯데하이마트",
+    title: "롯데하이마트 여름 가전 특가전",
+    desc: "에어컨·냉장고·TV 등 대형가전 여름 특가와 구매 사은 혜택.",
+    period: { start: "2026-07-01", end: "2026-07-31" }, posted: "2026-07-09", link: "https://www.e-himart.co.kr/" },
+  { id: 78, type: "brand", group: "beauty", sub: "스킨케어", promoType: "gift", brand: "아리따움",
+    title: "아리따움 멤버십 세일 · 사은품 증정",
+    desc: "아모레퍼시픽 편집숍 아리따움. 멤버십 할인과 인기 브랜드 사은품 증정.",
+    period: { start: "2026-07-01", end: "2026-07-31" }, posted: "2026-07-09", link: "https://www.aritaum.com/" },
+  { id: 79, type: "brand", group: "beauty", sub: "메이크업", promoType: "sale", brand: "에뛰드",
+    title: "에뛰드 컬러 메이크업 세일",
+    desc: "플레이컬러 아이즈·립 등 컬러 메이크업 시즌 세일.",
+    period: { start: "2026-07-01", end: "2026-07-20" }, posted: "2026-07-09", link: "https://www.etude.com/kr/ko/" },
 ];
 
 // 각 브랜드 공식 페이지에서 추출한 대표 이미지(og:image). 로드 실패 시 모노그램으로 자동 대체.
@@ -395,6 +435,11 @@ const PROMO_IMAGES = {
   67: "https://assets2.razerzone.com/images/pnx.assets/0ab95b6fcfaf52a347990c448285b928/razer-logo-facebook-og.png",
   // 68 앱코, 69 JBL: 모노그램
   70: "https://static-obg.tcl.com/content/dam/brandsite/product/tv/p/p725/pc/ksp/QLED%208K_Banner_pc742x428.jpg?auto=webp,smallest",
+  // 71 G마켓, 72 옥션, 73 11번가, 74 네이버쇼핑: og 미확보(봇차단) → 모노그램+파비콘
+  75: "https://img.a-bly.com/og_image.jpg",
+  76: "https://sui.ssgcdn.com/ui/common/img/sns/ssg.png",
+  77: "https://static1.e-himart.co.kr/resources/layout/images/common/og_tag.png",
+  // 78 아리따움, 79 에뛰드: og 저품질 → 모노그램
 };
 
 // 전시용 지표 시드(실서비스에선 서버 집계값). id 기반 결정적 계산으로 매번 동일.
