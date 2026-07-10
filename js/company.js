@@ -169,9 +169,11 @@ if (!auth || auth.role !== "business" || !auth.brand) {
   $("coKpis").innerHTML = "";
   $("coPromos").innerHTML = '<p class="rep-empty">이 브랜드로 등록된 프로모션이 아직 없어 인텔리전스가 없습니다. 프로모션을 등록하면 생성됩니다.</p>';
   $("coNote").textContent = "";
+  if (window.renderLiveDash) window.renderLiveDash($("coLive"), auth.brand);
 } else {
   state.brand = auth.brand;
   state.sub = "all";
   $("coDash").hidden = false;
   renderDash();
+  if (window.renderLiveDash) window.renderLiveDash($("coLive"), auth.brand);
 }

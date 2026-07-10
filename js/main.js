@@ -369,8 +369,19 @@ renderQuickbar();
 renderNav();
 renderTypebar();
 renderGrid();
-renderHotroll();
-hotAuto();
+
+// 히어로 우측: 기업회원이면 실시간 대시보드, 아니면 인기 캐러셀
+const _auth = window.AUTH && window.AUTH.get();
+const _biz = !!(_auth && _auth.role === "business" && _auth.brand);
+if (_biz && window.renderLiveDash) {
+  const hc = document.getElementById("heroCarousel"), hd = document.getElementById("heroDash");
+  if (hc) hc.hidden = true;
+  if (hd) { hd.hidden = false; window.renderLiveDash(hd, _auth.brand); }
+  else { renderHotroll(); hotAuto(); }
+} else {
+  renderHotroll();
+  hotAuto();
+}
 
 // 서버(D1) 프로모션 병합 — 배포 환경에서만 동작, 실패/빈값이면 정적 데이터 유지
 fetch("/api/promotions")

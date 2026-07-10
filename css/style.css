@@ -957,6 +957,54 @@ body.is-biz .js-biz { display: inline; }
 .co-promo__body b { font-size: 0.92rem; font-weight: 700; color: var(--ink); }
 .co-promo__body span { font-size: 0.78rem; color: var(--muted); }
 
+/* ================= 실시간 대시보드 위젯 ================= */
+.ld-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+.ld-title { font-size: 1rem; font-weight: 800; display: inline-flex; align-items: center; gap: 8px; }
+.ld-live { font-size: 0.6rem; font-weight: 800; letter-spacing: 0.08em; color: var(--faint); border: 1px solid currentColor; padding: 1px 6px; border-radius: 5px; }
+.ld-live.on { color: #e0483a; animation: pulse 1.4s ease-in-out infinite; }
+.ld-toggle { padding: 8px 14px; font-size: 0.82rem; font-weight: 700; background: var(--ink); color: #fff; }
+.ld-toggle--on { background: var(--surface-2); color: var(--ink); border: 1px solid var(--line); }
+.ld-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+.ld-kpis > div { background: var(--surface-2); border-radius: 10px; padding: 12px; text-align: center; }
+.ld-kpis strong { display: block; font-family: "Noto Serif KR", serif; font-size: 1.3rem; font-weight: 600; }
+.ld-kpis span { font-size: 0.7rem; color: var(--muted); }
+.ld-gauge { margin-bottom: 12px; }
+.ld-gauge__bar { height: 10px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
+.ld-gauge__bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), #d98b6f); border-radius: 999px; transition: width 0.6s ease; }
+.ld-gauge__lb { font-size: 0.72rem; color: var(--muted); margin-top: 5px; }
+.ld-spark { display: flex; align-items: flex-end; gap: 2px; height: 40px; margin-bottom: 14px; }
+.ld-spark span { flex: 1; background: var(--accent); opacity: 0.45; border-radius: 2px 2px 0 0; min-width: 2px; transition: height 0.4s ease; }
+.ld-spark span:last-child { opacity: 1; }
+.ld-funnel__h { font-size: 0.76rem; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+.ld-fbar { display: grid; grid-template-columns: 38px 1fr 40px; align-items: center; gap: 8px; margin-bottom: 6px; }
+.ld-fbar__l { font-size: 0.76rem; font-weight: 700; color: var(--ink-2); }
+.ld-fbar__t { height: 12px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
+.ld-fbar__t span { display: block; height: 100%; background: var(--ink-2); border-radius: 999px; transition: width 0.5s ease; }
+.ld-fbar__v { font-size: 0.76rem; font-weight: 800; text-align: right; color: var(--ink); }
+.ld-insight { font-size: 0.85rem; line-height: 1.5; color: var(--ink-2); margin-top: 12px; padding: 10px 12px; background: var(--accent-soft); border-radius: 8px; }
+.ld-insight b { color: var(--accent); }
+.ld-predict { font-size: 0.8rem; color: var(--muted); margin-top: 8px; }
+.ld-predict b { color: var(--ink); }
+
+/* 다크(히어로) 컨텍스트 */
+.ld--dark .ld-title { color: #fff; }
+.ld--dark .ld-kpis > div { background: rgba(255, 255, 255, 0.08); }
+.ld--dark .ld-kpis strong { color: #fff; }
+.ld--dark .ld-kpis span { color: rgba(255, 255, 255, 0.6); }
+.ld--dark .ld-gauge__bar, .ld--dark .ld-fbar__t { background: rgba(255, 255, 255, 0.14); }
+.ld--dark .ld-fbar__t span { background: #fff; }
+.ld--dark .ld-fbar__l, .ld--dark .ld-fbar__v { color: #fff; }
+.ld--dark .ld-funnel__h, .ld--dark .ld-gauge__lb, .ld--dark .ld-predict { color: rgba(255, 255, 255, 0.6); }
+.ld--dark .ld-predict b { color: #fff; }
+.ld--dark .ld-insight { background: rgba(181, 86, 59, 0.22); color: #f0e2db; }
+.ld--dark .ld-insight b { color: #e6a58f; }
+.ld--dark .ld-toggle { background: #fff; color: var(--ink); }
+.ld--dark .ld-toggle--on { background: rgba(255, 255, 255, 0.14); color: #fff; border-color: rgba(255, 255, 255, 0.3); }
+.ld--dark .ld-live { color: rgba(255, 255, 255, 0.55); }
+.ld--dark .ld-live.on { color: #ff8878; }
+.ld--dark .ld-spark span { background: #e6a58f; }
+.co-live-card { padding-top: 22px; }
+
 /* ================= 반응형 ================= */
 @media (max-width: 1024px) {
   .hero__title { font-size: 2.5rem; }
