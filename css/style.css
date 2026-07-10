@@ -1230,3 +1230,64 @@ body.is-admin .js-admin { display: inline-flex; }
   .co-pos-grid { grid-template-columns: 1fr; }
   .bh-2col { grid-template-columns: 1fr; gap: 16px; }
 }
+
+/* ============================================================
+   리포트 v2 — 툴바 / 탭 / 벤치마크 / 키워드 / 인쇄
+   ============================================================ */
+/* 툴바: 기간 필터 + PDF */
+.rep-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+.rep-period { display: inline-flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 6px 5px 14px; }
+.rep-period__l { font-size: 0.78rem; font-weight: 700; color: var(--muted); margin-right: 4px; }
+.rp-chip { padding: 6px 14px; border-radius: 999px; font-size: 0.82rem; font-weight: 600; color: var(--muted); background: transparent; border: none; cursor: pointer; transition: all 0.15s; }
+.rp-chip:hover { color: var(--ink); }
+.rp-chip.is-active { background: var(--ink); color: #fff; }
+.btn--soft { background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
+.btn--soft:hover { background: var(--surface-2); border-color: var(--ink); }
+.rep-pdf::before { content: "📄"; margin-right: 6px; }
+
+/* 탭 네비 */
+.rtab-nav { display: flex; gap: 4px; border-bottom: 1.5px solid var(--line); margin: 4px 0 22px; overflow-x: auto; scrollbar-width: none; }
+.rtab-nav::-webkit-scrollbar { display: none; }
+.rtab { position: relative; padding: 12px 18px; font-size: 0.92rem; font-weight: 700; color: var(--muted); background: none; border: none; cursor: pointer; white-space: nowrap; transition: color 0.15s; }
+.rtab:hover { color: var(--ink); }
+.rtab.is-active { color: var(--ink); }
+.rtab.is-active::after { content: ""; position: absolute; left: 10px; right: 10px; bottom: -1.5px; height: 2.5px; background: var(--accent); border-radius: 3px; }
+.rtab-panel { display: flex; flex-direction: column; gap: 20px; }
+.rtab-panel[hidden] { display: none; }
+.rtab-panel .rep-grid { margin-top: 0; }
+
+/* 할인율 벤치마크 */
+.bench-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 22px; }
+.bench-stat { background: var(--surface-2); border: 1px solid var(--line-2); border-radius: var(--radius-sm); padding: 14px 10px; text-align: center; }
+.bench-stat strong { display: block; font-family: "Noto Serif KR", serif; font-size: 1.55rem; font-weight: 600; color: var(--ink); line-height: 1; }
+.bench-stat span { display: block; font-size: 0.74rem; color: var(--muted); margin-top: 6px; font-weight: 600; }
+.bench-hist { display: flex; align-items: flex-end; gap: 14px; height: 150px; padding: 0 6px; }
+.bench-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+.bench-col__v { font-size: 0.78rem; font-weight: 800; color: var(--ink-2); margin-bottom: 5px; }
+.bench-col__bar { width: 100%; max-width: 64px; min-height: 4px; background: linear-gradient(180deg, var(--accent), #cf7a5f); border-radius: 6px 6px 0 0; transition: height 0.3s; }
+.bench-col__l { font-size: 0.72rem; color: var(--muted); margin-top: 8px; font-weight: 600; }
+.bench-note { font-size: 0.78rem; color: var(--faint); line-height: 1.6; margin-top: 16px; }
+
+/* 키워드 트렌드 (워드클라우드) */
+.kw-cloud { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 8px 2px; }
+.kw-tag { font-weight: 700; color: var(--ink); line-height: 1.2; letter-spacing: -0.01em; }
+.kw-tag:nth-child(3n) { color: var(--accent); }
+.kw-tag:nth-child(5n) { color: var(--ink-2); }
+
+/* 인쇄 (PDF 내보내기) */
+@media print {
+  .header, .footer, .rep-toolbar, .rtab-nav, .rep-b2b, .rep-hero__eyebrow { display: none !important; }
+  .rtab-panel, .rtab-panel[hidden] { display: flex !important; page-break-inside: auto; }
+  .rep-hero { background: none; padding: 0 0 12px; border-bottom: 1.5px solid #000; }
+  .rep-hero__title { color: #000; }
+  .rep { padding: 0; max-width: 100%; }
+  .rep-card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+  body { background: #fff; }
+}
+
+@media (max-width: 680px) {
+  .bench-stats { grid-template-columns: repeat(2, 1fr); }
+  .rtab { padding: 11px 13px; font-size: 0.85rem; }
+  .rep-toolbar { gap: 10px; }
+  .rep-pdf { flex: 1; }
+}

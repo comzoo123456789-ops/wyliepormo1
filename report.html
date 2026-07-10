@@ -33,91 +33,117 @@
   </section>
 
   <main class="rep">
-    <!-- KPI -->
+    <!-- 툴바: 기간 필터 + PDF -->
+    <div class="rep-toolbar">
+      <div class="rep-period" id="repPeriod">
+        <span class="rep-period__l">기간</span>
+        <button class="rp-chip is-active" data-p="all">전체</button>
+        <button class="rp-chip" data-p="month">이번 달</button>
+        <button class="rp-chip" data-p="week">이번 주</button>
+      </div>
+      <button class="btn btn--soft rep-pdf" id="pdfBtn">PDF로 내보내기</button>
+    </div>
+
+    <!-- ===== 요약 (항상 표시) ===== -->
     <section class="rep-kpis" id="repKpis"><!-- JS --></section>
 
-    <!-- 핵심 인사이트 (자동 분석) -->
     <section class="rep-card rep-card--wide">
       <h2 class="rep-card__title">핵심 인사이트</h2>
-      <p class="rep-card__desc">집계 데이터에서 자동 추출한 이번 주 요약</p>
+      <p class="rep-card__desc">집계 데이터에서 자동 추출한 요약</p>
       <ul class="insight-list" id="repInsight"><!-- JS --></ul>
     </section>
 
-    <div class="rep-grid">
-      <!-- 카테고리별 -->
-      <section class="rep-card">
-        <h2 class="rep-card__title">카테고리별 프로모션 수</h2>
-        <p class="rep-card__desc">지금 어느 카테고리가 가장 활발한가</p>
-        <div class="bars" id="chartCat"><!-- JS --></div>
-      </section>
+    <!-- ===== 탭 ===== -->
+    <nav class="rtab-nav" id="rtabNav">
+      <button class="rtab is-active" data-tab="market">시장 동향</button>
+      <button class="rtab" data-tab="compete">경쟁 · 타이밍</button>
+      <button class="rtab" data-tab="bench">벤치마크</button>
+      <button class="rtab" data-tab="action">액션 참고</button>
+    </nav>
 
-      <!-- 유형별 -->
-      <section class="rep-card">
-        <h2 class="rep-card__title">프로모션 유형 분포</h2>
-        <p class="rep-card__desc">할인·증정·쿠폰·체험단·신제품·기간한정</p>
-        <div class="bars" id="chartType"><!-- JS --></div>
+    <!-- 탭 ① 시장 동향 -->
+    <div class="rtab-panel" data-panel="market">
+      <section class="rep-card rep-card--wide">
+        <h2 class="rep-card__title">주간 추이 · 전주 대비 <span class="co-demo" id="trendTag">추정</span></h2>
+        <p class="rep-card__desc">진행 프로모션 수 주간 변화 — 일일 스냅샷이 누적되면 실데이터로 자동 대체됩니다.</p>
+        <div id="trendWrap"><!-- JS --></div>
       </section>
+      <div class="rep-grid">
+        <section class="rep-card">
+          <h2 class="rep-card__title">카테고리별 프로모션 수</h2>
+          <p class="rep-card__desc">지금 어느 카테고리가 가장 활발한가</p>
+          <div class="bars" id="chartCat"><!-- JS --></div>
+        </section>
+        <section class="rep-card">
+          <h2 class="rep-card__title">프로모션 유형 분포</h2>
+          <p class="rep-card__desc">할인·증정·쿠폰·체험단·신제품·기간한정</p>
+          <div class="bars" id="chartType"><!-- JS --></div>
+        </section>
+      </div>
+    </div>
 
-      <!-- 평균 할인율 -->
-      <section class="rep-card">
-        <h2 class="rep-card__title">카테고리별 평균 할인율</h2>
-        <p class="rep-card__desc">할인/기간한정 프로모션 기준</p>
-        <div class="bars" id="chartDisc"><!-- JS --></div>
+    <!-- 탭 ② 경쟁 · 타이밍 -->
+    <div class="rtab-panel" data-panel="compete" hidden>
+      <section class="rep-card rep-card--wide">
+        <h2 class="rep-card__title">프로모션 캘린더 타임라인</h2>
+        <p class="rep-card__desc">경쟁사 프로모션 시작·종료를 달력 위 막대로 정렬 (카테고리 필터로 일정 겹침 비교)</p>
+        <div class="cal-chips" id="calChips"></div>
+        <div id="calWrap"></div>
       </section>
-
-      <!-- 인기 브랜드 TOP -->
-      <section class="rep-card">
-        <h2 class="rep-card__title">인기 브랜드 TOP 10</h2>
-        <p class="rep-card__desc">조회수 기준</p>
+      <section class="rep-card rep-card--wide">
+        <h2 class="rep-card__title">카테고리별 프로모션 포화도 <span class="rep-card__hint">노출 경쟁 지수</span></h2>
+        <p class="rep-card__desc">타사 프로모션이 몰린 정도 — 🔴 포화(진입 비추천) · 🟡 보통 · 🟢 여유(진입 적기)</p>
+        <div id="satWrap"></div>
+      </section>
+      <section class="rep-card rep-card--wide">
+        <h2 class="rep-card__title">브랜드 노출 점유율 (SoV) <span class="rep-card__hint">Share of Voice</span></h2>
+        <p class="rep-card__desc">전체 노출(조회수) 중 브랜드별 점유 비중 — 지금 누가 가장 크게 보이는가</p>
         <div class="ranklist" id="chartBrand"><!-- JS --></div>
       </section>
     </div>
 
-    <!-- 주간 추이 · 전주 대비 -->
-    <section class="rep-card rep-card--wide">
-      <h2 class="rep-card__title">주간 추이 · 전주 대비 <span class="co-demo" id="trendTag">추정</span></h2>
-      <p class="rep-card__desc">진행 프로모션 수 주간 변화 — 일일 스냅샷이 누적되면 실데이터로 자동 대체됩니다.</p>
-      <div id="trendWrap"><!-- JS --></div>
-    </section>
-
-    <!-- 신규 · 마감 임박 -->
-    <section class="rep-card rep-card--wide">
-      <h2 class="rep-card__title">이번 주 신규 · 마감 임박</h2>
-      <p class="rep-card__desc">방금 올라온 프로모션과 곧 끝나는 프로모션 (노출 경쟁 구간)</p>
-      <div class="rep-two">
-        <div><div class="rep-two__h">🆕 신규 등록</div><div class="rep-feed" id="repNew"></div></div>
-        <div><div class="rep-two__h">⏰ 마감 임박 (D-3 이내)</div><div class="rep-feed" id="repEnd"></div></div>
+    <!-- 탭 ③ 벤치마크 -->
+    <div class="rtab-panel" data-panel="bench" hidden>
+      <section class="rep-card rep-card--wide">
+        <h2 class="rep-card__title">할인율 벤치마크</h2>
+        <p class="rep-card__desc">평균·중앙값·최대와 구간 분포 — 우리 할인율이 시장에서 어느 수준인지 가늠</p>
+        <div id="benchWrap"><!-- JS --></div>
+      </section>
+      <div class="rep-grid">
+        <section class="rep-card">
+          <h2 class="rep-card__title">카테고리별 평균 할인율</h2>
+          <p class="rep-card__desc">할인/기간한정 프로모션 기준</p>
+          <div class="bars" id="chartDisc"><!-- JS --></div>
+        </section>
+        <section class="rep-card">
+          <h2 class="rep-card__title">카테고리 × 유형 매트릭스</h2>
+          <p class="rep-card__desc">어떤 카테고리가 어떤 방식으로 프로모션하는지 (진한 색일수록 많음)</p>
+          <div class="matrix-wrap"><table class="matrix" id="chartMatrix"><!-- JS --></table></div>
+        </section>
       </div>
-    </section>
+    </div>
 
-    <!-- 매트릭스 -->
-    <section class="rep-card rep-card--wide">
-      <h2 class="rep-card__title">카테고리 × 프로모션 유형 매트릭스</h2>
-      <p class="rep-card__desc">어떤 카테고리가 어떤 방식으로 프로모션하는지 (진한 색일수록 많음)</p>
-      <div class="matrix-wrap"><table class="matrix" id="chartMatrix"><!-- JS --></table></div>
-    </section>
-
-    <!-- 프로모션 캘린더 타임라인 -->
-    <section class="rep-card rep-card--wide">
-      <h2 class="rep-card__title">프로모션 캘린더 타임라인</h2>
-      <p class="rep-card__desc">경쟁사 프로모션 시작·종료를 달력 위 막대로 정렬 (카테고리 필터로 일정 겹침 비교)</p>
-      <div class="cal-chips" id="calChips"></div>
-      <div id="calWrap"></div>
-    </section>
-
-    <!-- 카테고리 포화도 -->
-    <section class="rep-card rep-card--wide">
-      <h2 class="rep-card__title">카테고리별 프로모션 포화도 <span class="rep-card__hint">노출 경쟁 지수</span></h2>
-      <p class="rep-card__desc">타사 프로모션이 몰린 정도 — 🔴 포화(진입 비추천) · 🟡 보통 · 🟢 여유(진입 적기)</p>
-      <div id="satWrap"></div>
-    </section>
-
-    <!-- 최고 효율 카피 TOP3 -->
-    <section class="rep-card rep-card--wide">
-      <h2 class="rep-card__title">이번 주 최고 효율 카피 TOP 3 <span class="co-demo">데모 CTR</span></h2>
-      <p class="rep-card__desc">클릭률(CTR)이 높은 프로모션 타이틀 — 기획 카피 레퍼런스</p>
-      <div id="copyWrap"></div>
-    </section>
+    <!-- 탭 ④ 액션 참고 -->
+    <div class="rtab-panel" data-panel="action" hidden>
+      <section class="rep-card rep-card--wide">
+        <h2 class="rep-card__title">이번 주 최고 효율 카피 TOP 3 <span class="co-demo">데모 CTR</span></h2>
+        <p class="rep-card__desc">클릭률(CTR)이 높은 프로모션 타이틀 — 기획 카피 레퍼런스</p>
+        <div id="copyWrap"><!-- JS --></div>
+      </section>
+      <section class="rep-card rep-card--wide">
+        <h2 class="rep-card__title">키워드 트렌드</h2>
+        <p class="rep-card__desc">프로모션 카피에 많이 쓰인 키워드 (조회수 가중) — 지금 시장이 미는 메시지</p>
+        <div id="kwWrap"><!-- JS --></div>
+      </section>
+      <section class="rep-card rep-card--wide">
+        <h2 class="rep-card__title">신규 · 마감 임박</h2>
+        <p class="rep-card__desc">방금 올라온 프로모션과 곧 끝나는 프로모션 (노출 경쟁 구간)</p>
+        <div class="rep-two">
+          <div><div class="rep-two__h">🆕 신규 등록</div><div class="rep-feed" id="repNew"></div></div>
+          <div><div class="rep-two__h">⏰ 마감 임박 (D-3 이내)</div><div class="rep-feed" id="repEnd"></div></div>
+        </div>
+      </section>
+    </div>
 
     <!-- ===== B2B 리포트 판매 ===== -->
     <section class="rep-b2b">
@@ -132,7 +158,7 @@
           <div class="tier__price">₩99,000<span>/회</span></div>
           <ul>
             <li>카테고리·유형·할인율 주간 추이</li>
-            <li>인기 브랜드 TOP 20</li>
+            <li>브랜드 SoV TOP 20</li>
             <li>신규·종료 프로모션 목록</li>
             <li>PDF 1부</li>
           </ul>
