@@ -37,7 +37,8 @@ const liked = loadLikes();
 // ---------- 데이터 병합 (정적 + 서버 D1 + 로컬 등록) ----------
 let ALL = [];
 function buildAll(server) {
-  const mine = loadMine().map((p, i) => ({
+  // 운영자 승인 대기(pending)는 목록에 노출하지 않음
+  const mine = loadMine().filter((p) => p.status !== "pending").map((p, i) => ({
     ...p, id: p.id || 9000 + i, isMine: true,
     likes: p.likes ?? 3, views: p.views ?? 12, posted: p.posted || TODAY_STR,
   }));
@@ -180,7 +181,7 @@ function cardHTML(p, rank) {
   const codeRow = p.code ? `<button class="card__code" data-code aria-label="쿠폰코드 복사">🎟 <span>${p.code}</span> <b>복사</b></button>` : "";
 
   return `
-  <a class="card ${dd.ended ? "is-ended" : ""}" href="${p.link}" data-id="${p.id}"${ext ? ' target="_blank" rel="noopener noreferrer"' : ""}>
+  <a class="card ${dd.ended ? "is-ended" : ""}" href="promo.html?id=${p.id}" data-id="${p.id}">
     <div class="card__thumb" style="--tint:${g.tint};--tink:${g.ink}">
       <span class="card__watermark">${iconSVG(g.icon, 30)}</span>
       <span class="card__mono">${initial}</span>
@@ -234,9 +235,8 @@ async function clip(text) {
   else { const t = document.createElement("textarea"); t.value = text; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove(); }
 }
 async function copyLink(id) {
-  const p = ALL.find((x) => x.id === id);
-  if (!p || !isExternal(p.link)) return toast("연결된 링크가 없는 항목입니다");
-  try { await clip(p.link); toast("프로모션 링크가 복사되었습니다 📋"); } catch (e) { toast("복사 실패 — 주소를 직접 확인해 주세요"); }
+  const url = new URL("promo.html?id=" + id, location.href).href;
+  try { await clip(url); toast("상세 링크가 복사되었습니다 📋"); } catch (e) { toast("복사 실패 — 주소를 직접 확인해 주세요"); }
 }
 async function copyCode(id) {
   const p = ALL.find((x) => x.id === id);
@@ -284,10 +284,7 @@ $grid.addEventListener("click", (e) => {
   if (e.target.closest(".card__like")) { e.preventDefault(); toggleLike(id); return; }
   if (e.target.closest(".card__share")) { e.preventDefault(); copyLink(id); return; }
   if (e.target.closest(".card__code")) { e.preventDefault(); copyCode(id); return; }
-  // 그 외 클릭 → 링크로 이동 (외부는 새 탭, 링크 없으면 막기)
-  const p = ALL.find((x) => x.id === id);
-  if (!p || !isExternal(p.link)) { e.preventDefault(); toast("등록된 링크가 아직 없는 항목입니다"); return; }
-  // 클릭 로깅(실제 유입 지표 기반) — 서버 없으면 조용히 무시
+  // 그 외 클릭 → 자체 상세 페이지(promo.html)로 이동. 클릭 로깅(서버 없으면 무시)
   try { fetch("/api/click", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ id }), keepalive: true }); } catch (err) {}
 });
 

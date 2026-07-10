@@ -124,6 +124,41 @@ function barRow(label, value, max, color, suffix) {
     </div>`).join("");
 })();
 
+// ---------- 주간 추이 · 전주 대비 ----------
+(function trend() {
+  const wrap = document.getElementById("trendWrap");
+  const N = P.filter((p) => p.type === "brand").length;
+
+  function draw(series, labels, real) {
+    const max = Math.max(...series, 1);
+    const prev = series[series.length - 2] || 0, cur = series[series.length - 1] || 0;
+    const wow = cur - prev, pct = prev ? (wow / prev) * 100 : 0;
+    const bars = series.map((v, i) => `
+      <div class="trend-bar ${i === series.length - 1 ? "is-now" : ""}">
+        <span class="trend-bar__v">${v}</span>
+        <span class="trend-bar__t"><i style="height:${Math.round((v / max) * 100)}%"></i></span>
+        <span class="trend-bar__l">${labels[i]}</span>
+      </div>`).join("");
+    wrap.innerHTML = `<div class="trend-wow">이번 주 <b>${cur}건</b> · 전주 대비 <b class="${wow >= 0 ? "co-up" : "co-down"}">${wow >= 0 ? "▲" : "▼"} ${Math.abs(wow)}건 (${pct.toFixed(1)}%)</b></div><div class="trend-bars">${bars}</div>`;
+    const tag = document.getElementById("trendTag");
+    if (tag) { tag.textContent = real ? "실데이터" : "추정"; if (real) tag.style.background = "#3f7a5e22"; }
+  }
+
+  // 데모(추정) 시리즈 — 결정적
+  const mult = [0.72, 0.79, 0.83, 0.8, 0.88, 0.93, 0.97, 1.0];
+  const demo = mult.map((m) => Math.round(N * m));
+  const demoLabels = ["-7주", "-6주", "-5주", "-4주", "-3주", "-2주", "지난주", "이번주"];
+  draw(demo, demoLabels, false);
+
+  // 실데이터(스냅샷)로 대체 시도
+  fetch("/api/snapshots").then((r) => (r.ok ? r.json() : null)).then((rows) => {
+    if (Array.isArray(rows) && rows.length >= 2) {
+      const last = rows.slice(-8);
+      draw(last.map((x) => x.promos || 0), last.map((x) => (x.date || "").slice(5)), true);
+    }
+  }).catch(() => {});
+})();
+
 // ---------- 신규 · 마감 임박 ----------
 (function feeds() {
   const dleft = (end) => Math.round((new Date(end) - TODAY) / 86400000);

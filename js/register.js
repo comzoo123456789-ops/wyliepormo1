@@ -171,6 +171,7 @@ form.addEventListener("submit", (e) => {
     brand: val("fBrand"), title: val("fTitle"), desc: val("fDesc"),
     period: { start: val("fStart"), end: val("fEnd") },
     link: val("fLink") || "#", posted: new Date().toISOString().slice(0, 10),
+    status: "pending", // 운영자 승인 후 노출
     _meta: { manager: val("fManager"), phone: val("fPhone"), email: val("fEmail"), bizno: val("fBizno"), reviewNo: val("fReviewNo") },
   };
   if (val("fImage")) promo.image = val("fImage");

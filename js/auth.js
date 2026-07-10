@@ -21,14 +21,15 @@ window.AUTH = (function () {
 (function initAuthUI() {
   function apply() {
     const a = window.AUTH.get();
-    const biz = !!(a && a.role === "business");
-    document.body.classList.toggle("is-biz", biz);
+    const role = a ? a.role : null;
+    document.body.classList.toggle("is-biz", role === "business");
+    document.body.classList.toggle("is-admin", role === "admin");
     document.body.classList.toggle("is-auth", !!a);
 
     const box = document.getElementById("authArea");
     if (box) {
       if (a) {
-        const tag = a.role === "business" ? "🏢" : "👤";
+        const tag = role === "business" ? "🏢" : role === "admin" ? "🛡️" : "👤";
         box.innerHTML = `<span class="auth-name">${tag} ${a.name || a.userId}${a.brand ? " · " + a.brand : ""}</span><a href="#" class="header__link" id="authLogout">로그아웃</a>`;
         const lo = document.getElementById("authLogout");
         if (lo) lo.addEventListener("click", (e) => { e.preventDefault(); window.AUTH.logout(); location.href = "index.html"; });
@@ -37,10 +38,10 @@ window.AUTH = (function () {
       }
     }
 
-    // 페이지 접근 가드: <body data-require="business">
+    // 페이지 접근 가드: <body data-require="business"> / "admin"
     const req = document.body.getAttribute("data-require");
-    if (req === "business" && !biz) {
-      alert("기업(사업자) 회원 전용 페이지입니다. 사업자 회원으로 로그인해 주세요.");
+    if (req && role !== req) {
+      alert(req === "admin" ? "운영자 전용 페이지입니다." : "기업(사업자) 회원 전용 페이지입니다. 로그인해 주세요.");
       location.href = "login.html";
     }
   }

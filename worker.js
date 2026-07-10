@@ -38,6 +38,12 @@ export default {
     if (path === "/api/clicks" && request.method === "GET") {
       return clickCounts(env);
     }
+    if (path === "/api/scroll" && request.method === "POST") {
+      return logScroll(request, env);
+    }
+    if (path === "/api/snapshots" && request.method === "GET") {
+      return listSnapshots(env);
+    }
 
     // 정적 자산
     return env.ASSETS.fetch(request);
@@ -79,6 +85,25 @@ async function clickCounts(env) {
   } catch (e) {
     return json({});
   }
+}
+
+// 스크롤 깊이 이벤트(상세 페이지에서 전송) 로깅
+async function logScroll(request, env) {
+  if (!env.DB) return json({ ok: false });
+  try {
+    const { id, depth } = await request.json();
+    if (id != null && depth != null) await env.DB.prepare("INSERT INTO scroll_events (promo_id, depth) VALUES (?, ?)").bind(String(id), Number(depth)).run();
+    return json({ ok: true });
+  } catch (e) { return json({ ok: false }); }
+}
+
+// 일일 스냅샷 목록(추이 리포트용)
+async function listSnapshots(env) {
+  if (!env.DB) return json([]);
+  try {
+    const { results } = await env.DB.prepare("SELECT date, clicks, promos FROM snapshots ORDER BY date ASC").all();
+    return json(results || []);
+  } catch (e) { return json([]); }
 }
 
 // ---------- 목록 조회 ----------

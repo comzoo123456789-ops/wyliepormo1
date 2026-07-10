@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>운영자 · 프로모션 관리 · 프로모보드</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&display=swap" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-require="admin">
+  <header class="header">
+    <div class="header__inner">
+      <a href="index.html" class="logo"><span class="logo__dot"></span>promoboard</a>
+      <nav class="header__nav">
+        <a href="index.html" class="header__link">← 목록</a>
+        <span id="authArea" class="auth-area"></span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="adm">
+    <div class="adm-head">
+      <span class="rep-hero__eyebrow" style="color:var(--accent)">ADMIN</span>
+      <h1 class="reg__title">등록 프로모션 관리</h1>
+      <p class="reg__sub">등록된 프로모션을 <b>승인</b>해야 목록에 노출됩니다. 반려/삭제도 가능합니다.</p>
+    </div>
+
+    <div class="adm-tabs" id="admTabs"></div>
+    <div class="adm-list" id="admList"></div>
+    <p class="rep-note" id="admNote"></p>
+  </main>
+
+  <script src="js/icons.js"></script>
+  <script src="data/categories.js"></script>
+  <script src="data/promotions.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
