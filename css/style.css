@@ -884,7 +884,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 /* ================= 인증 (로그인/회원가입) ================= */
 /* 역할별 메뉴 노출: 기본 숨김 → 사업자 로그인 시에만 */
 .js-biz { display: none; }
-body.is-biz .js-biz { display: inline; }
+body.is-biz .js-biz { display: inline-flex; }
 .auth-area { display: inline-flex; align-items: center; gap: 16px; }
 .auth-name { font-size: 0.85rem; font-weight: 700; color: var(--ink-2); }
 
