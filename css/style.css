@@ -1102,6 +1102,57 @@ body.is-biz .js-biz { display: inline-flex; }
 .js-admin { display: none; }
 body.is-admin .js-admin { display: inline-flex; }
 
+.rep-card__hint { font-size: 0.72rem; font-weight: 700; color: var(--faint); }
+
+/* 피크타임 히트맵 */
+.peak-grid { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; overflow-x: auto; }
+.peak-brow { display: grid; grid-template-columns: 54px repeat(7, minmax(30px, 1fr)); gap: 5px; align-items: center; }
+.peak-bl { font-size: 0.74rem; color: var(--muted); font-weight: 600; }
+.peak-d { text-align: center; font-size: 0.74rem; color: var(--faint); font-weight: 700; }
+.peak-cell { height: 22px; border-radius: 5px; }
+.peak-cell.is-peak { outline: 2px solid var(--accent); outline-offset: 1px; }
+.peak-rec { background: var(--accent-soft); border-radius: 10px; padding: 12px 14px; font-size: 0.88rem; line-height: 1.5; color: var(--ink-2); }
+.peak-rec b { color: var(--accent); }
+
+/* 프로모션 캘린더 타임라인 */
+.cal-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.cal-chip { padding: 6px 13px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; color: var(--muted); background: var(--surface-2); border: 1px solid var(--line); }
+.cal-chip.is-active { background: var(--ink); color: #fff; border-color: var(--ink); }
+.cal-scale { display: grid; grid-template-columns: 54px 1fr; gap: 8px; margin-bottom: 8px; }
+.cal-ticks { position: relative; height: 16px; }
+.cal-tick { position: absolute; transform: translateX(-50%); font-size: 0.68rem; color: var(--faint); }
+.cal-today { position: absolute; top: -2px; width: 2px; height: 20px; background: var(--accent); }
+.cal-rows { display: flex; flex-direction: column; gap: 6px; }
+.cal-row { display: grid; grid-template-columns: 54px 1fr; gap: 8px; align-items: center; }
+.cal-lbl { font-size: 0.74rem; color: var(--ink-2); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cal-track { position: relative; height: 20px; background: var(--surface-2); border-radius: 6px; }
+.cal-bar { position: absolute; top: 3px; height: 14px; border-radius: 5px; opacity: 0.9; }
+.cal-bar em { display: none; }
+.cal-legend { font-size: 0.72rem; color: var(--faint); margin-top: 8px; }
+
+/* 카테고리 포화도 */
+.sat-row { padding: 14px 0; border-bottom: 1px solid var(--line-2); }
+.sat-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.sat-badge { font-size: 0.8rem; font-weight: 800; }
+.sat-top b { font-weight: 700; }
+.sat-n { margin-left: auto; font-size: 0.8rem; color: var(--muted); font-weight: 700; }
+.sat-bar { height: 8px; background: var(--surface-2); border-radius: 999px; overflow: hidden; margin-bottom: 6px; }
+.sat-bar span { display: block; height: 100%; border-radius: 999px; }
+.sat-red .sat-bar span { background: #b24a38; } .sat-red .sat-badge { color: #b24a38; }
+.sat-amber .sat-bar span { background: #a9782b; } .sat-amber .sat-badge { color: #a9782b; }
+.sat-green .sat-bar span { background: #3f7a5e; } .sat-green .sat-badge { color: #3f7a5e; }
+.sat-guide { font-size: 0.82rem; color: var(--muted); }
+
+/* 최고 효율 카피 TOP3 */
+.copy-row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line-2); }
+.copy-rank { width: 30px; height: 30px; border-radius: 8px; background: var(--accent); color: #fff; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.copy-main { flex: 1; min-width: 0; }
+.copy-title { font-size: 1rem; font-weight: 800; color: var(--ink); }
+.copy-meta { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+.copy-ctr { text-align: right; flex-shrink: 0; }
+.copy-ctr b { font-family: "Noto Serif KR", serif; font-size: 1.3rem; color: var(--accent); }
+.copy-ctr span { display: block; font-size: 0.68rem; color: var(--faint); }
+
 /* ================= 반응형 ================= */
 @media (max-width: 1024px) {
   .hero__title { font-size: 2.5rem; }

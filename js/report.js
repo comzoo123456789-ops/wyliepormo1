@@ -159,6 +159,86 @@ function barRow(label, value, max, color, suffix) {
   }).catch(() => {});
 })();
 
+// ---------- 공용 ----------
+function fnv(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+const gLabelOf = (p) => { const g = brandGroups.find((x) => x.id === p.group); return g ? g.label : p.group; };
+const gInkOf = (p) => { const g = brandGroups.find((x) => x.id === p.group); return g ? g.ink : "#888"; };
+
+// ---------- 프로모션 캘린더 타임라인 ----------
+(function calendar() {
+  const wrap = document.getElementById("calWrap"), chips = document.getElementById("calChips");
+  if (!wrap) return;
+  const DAYS = 30, msDay = 86400000;
+  const start = new Date(TODAY); start.setDate(start.getDate() - 6);
+  const end = new Date(start.getTime() + DAYS * msDay);
+  let cat = "all";
+
+  chips.innerHTML = `<button class="cal-chip is-active" data-c="all">전체</button>` +
+    brandGroups.map((g) => `<button class="cal-chip" data-c="${g.id}">${g.label}</button>`).join("");
+
+  function draw() {
+    let list = P.filter((p) => p.type === "brand");
+    if (cat !== "all") list = list.filter((p) => p.group === cat);
+    list = list.filter((p) => { const s = new Date(p.period.start), e = new Date(p.period.end); return e >= start && s <= end; });
+    list.sort((a, b) => new Date(a.period.start) - new Date(b.period.start));
+    list = list.slice(0, 18);
+
+    // 날짜 눈금 (5개)
+    const ticks = [0, 0.25, 0.5, 0.75, 1].map((r) => {
+      const d = new Date(start.getTime() + r * DAYS * msDay);
+      return `<span class="cal-tick" style="left:${r * 100}%">${d.getMonth() + 1}/${d.getDate()}</span>`;
+    }).join("");
+    const todayLeft = ((TODAY - start) / msDay / DAYS) * 100;
+
+    const rows = list.length ? list.map((p) => {
+      const s = Math.max(0, (new Date(p.period.start) - start) / msDay);
+      const e = Math.min(DAYS, (new Date(p.period.end) - start) / msDay + 1);
+      const left = (s / DAYS) * 100, w = Math.max(2.5, ((e - s) / DAYS) * 100);
+      return `<div class="cal-row"><span class="cal-lbl">${p.brand}</span><span class="cal-track"><span class="cal-bar" style="left:${left}%;width:${w}%;background:${gInkOf(p)}"><em>${p.title}</em></span></span></div>`;
+    }).join("") : `<p class="rep-empty">해당 기간 프로모션이 없습니다.</p>`;
+
+    wrap.innerHTML = `<div class="cal-scale"><span class="cal-lbl"></span><span class="cal-ticks">${ticks}<span class="cal-today" style="left:${todayLeft}%"></span></span></div>
+      <div class="cal-rows" style="--today:${todayLeft}%">${rows}</div>
+      <div class="cal-legend">▏ 오늘 기준 ±window · 막대 = 진행 기간</div>`;
+  }
+  chips.addEventListener("click", (e) => { const b = e.target.closest(".cal-chip"); if (!b) return; cat = b.dataset.c; chips.querySelectorAll(".cal-chip").forEach((x) => x.classList.toggle("is-active", x === b)); draw(); });
+  draw();
+})();
+
+// ---------- 카테고리 포화도 (노출 경쟁 지수) ----------
+(function saturation() {
+  const wrap = document.getElementById("satWrap");
+  if (!wrap) return;
+  const rows = brandGroups.map((g) => ({ g, n: P.filter((p) => p.type === "brand" && p.group === g.id && !isEnded(p)).length }));
+  const max = Math.max(...rows.map((r) => r.n), 1);
+  rows.sort((a, b) => b.n - a.n);
+  const meta = (n) => n >= 12 ? { k: "red", dot: "🔴", t: "포화", guide: "노출 경쟁이 치열합니다. 진입 시기를 조정하거나 강한 차별화 혜택이 필요합니다." }
+    : n >= 7 ? { k: "amber", dot: "🟡", t: "보통", guide: "무난한 경쟁 강도. 확실한 훅(할인율·증정)이 있으면 진입 가능합니다." }
+    : { k: "green", dot: "🟢", t: "여유", guide: "지금이 진입 적기입니다. 상대적으로 노출 확보가 유리합니다." };
+  wrap.innerHTML = rows.map((r) => {
+    const m = meta(r.n);
+    return `<div class="sat-row sat-${m.k}">
+      <div class="sat-top"><span class="sat-badge">${m.dot} ${m.t}</span><b>${r.g.label}</b><span class="sat-n">진행 ${r.n}건</span></div>
+      <div class="sat-bar"><span style="width:${Math.round((r.n / max) * 100)}%"></span></div>
+      <div class="sat-guide">${m.guide}</div>
+    </div>`;
+  }).join("");
+})();
+
+// ---------- 최고 효율 카피 TOP 3 (데모 CTR) ----------
+(function copyTop() {
+  const wrap = document.getElementById("copyWrap");
+  if (!wrap) return;
+  const ctr = (p) => 2 + (fnv(p.brand + p.title) % 850) / 100; // 2.00 ~ 10.50%
+  const top = [...P].map((p) => ({ p, c: ctr(p) })).sort((a, b) => b.c - a.c).slice(0, 3);
+  wrap.innerHTML = top.map(({ p, c }, i) => `
+    <div class="copy-row">
+      <span class="copy-rank">${i + 1}</span>
+      <div class="copy-main"><div class="copy-title">"${p.title}"</div><div class="copy-meta">${p.brand} · ${gLabelOf(p)}</div></div>
+      <span class="copy-ctr"><b>${c.toFixed(1)}%</b><span>CTR</span></span>
+    </div>`).join("");
+})();
+
 // ---------- 신규 · 마감 임박 ----------
 (function feeds() {
   const dleft = (end) => Math.round((new Date(end) - TODAY) / 86400000);

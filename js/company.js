@@ -38,6 +38,42 @@ function brandSubs(b) {
 
 const state = { brand: null, sub: "all" };
 
+// ---------- 요일·시간대 피크타임 (데모) ----------
+const PEAK_DAYS = ["월", "화", "수", "목", "금", "토", "일"];
+const PEAK_BUCKETS = [["오전", "9–12시"], ["점심", "12–14시"], ["오후", "14–18시"], ["저녁", "18–22시"], ["심야", "22–2시"]];
+function renderPeak(brand) {
+  const el = document.getElementById("coPeak");
+  if (!el) return;
+  let peak = { v: -1, d: 0, b: 0 };
+  const m = [];
+  for (let d = 0; d < 7; d++) {
+    const row = [];
+    for (let b = 0; b < 5; b++) {
+      let v = 28 + (hash(brand + "_" + d + "_" + b) % 60);
+      if (b === 3) v += 26;          // 저녁 가중
+      if (b === 1) v += 10;          // 점심
+      if (d >= 5 && b === 3) v += 14; // 주말 저녁
+      if (b === 4) v -= 18;          // 심야 저조
+      v = Math.max(6, Math.min(100, v));
+      row.push(v);
+      if (v > peak.v) peak = { v, d, b };
+    }
+    m.push(row);
+  }
+  const cells = PEAK_BUCKETS.map((bk, b) => {
+    const row = PEAK_DAYS.map((_, d) => {
+      const v = m[d][b], a = (0.08 + (v / 100) * 0.85).toFixed(2);
+      const on = d === peak.d && b === peak.b;
+      return `<span class="peak-cell ${on ? "is-peak" : ""}" style="background:rgba(181,86,59,${a})" title="${PEAK_DAYS[d]} ${bk[1]}"></span>`;
+    }).join("");
+    return `<div class="peak-brow"><span class="peak-bl">${bk[0]}</span>${row}</div>`;
+  }).join("");
+  const head = `<div class="peak-brow"><span class="peak-bl"></span>${PEAK_DAYS.map((d) => `<span class="peak-d">${d}</span>`).join("")}</div>`;
+  el.innerHTML = `
+    <div class="peak-grid">${head}${cells}</div>
+    <div class="peak-rec">📣 가장 유입이 몰리는 시간은 <b>${PEAK_DAYS[peak.d]}요일 ${PEAK_BUCKETS[peak.b][0]}(${PEAK_BUCKETS[peak.b][1]})</b>입니다. 이 시간대에 <b>카카오톡 푸시·광고 집행</b>을 추천합니다.</div>`;
+}
+
 // ---------- 지표 계산 (데모) ----------
 function metrics(brand, sub) {
   const prim = brandPrimary(brand);
@@ -170,10 +206,12 @@ if (!auth || auth.role !== "business" || !auth.brand) {
   $("coPromos").innerHTML = '<p class="rep-empty">이 브랜드로 등록된 프로모션이 아직 없어 인텔리전스가 없습니다. 프로모션을 등록하면 생성됩니다.</p>';
   $("coNote").textContent = "";
   if (window.renderLiveDash) window.renderLiveDash($("coLive"), auth.brand);
+  renderPeak(auth.brand);
 } else {
   state.brand = auth.brand;
   state.sub = "all";
   $("coDash").hidden = false;
   renderDash();
   if (window.renderLiveDash) window.renderLiveDash($("coLive"), auth.brand);
+  renderPeak(auth.brand);
 }
