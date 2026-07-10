@@ -286,7 +286,9 @@ $grid.addEventListener("click", (e) => {
   if (e.target.closest(".card__code")) { e.preventDefault(); copyCode(id); return; }
   // 그 외 클릭 → 링크로 이동 (외부는 새 탭, 링크 없으면 막기)
   const p = ALL.find((x) => x.id === id);
-  if (!p || !isExternal(p.link)) { e.preventDefault(); toast("등록된 링크가 아직 없는 항목입니다"); }
+  if (!p || !isExternal(p.link)) { e.preventDefault(); toast("등록된 링크가 아직 없는 항목입니다"); return; }
+  // 클릭 로깅(실제 유입 지표 기반) — 서버 없으면 조용히 무시
+  try { fetch("/api/click", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ id }), keepalive: true }); } catch (err) {}
 });
 
 // ============================================================

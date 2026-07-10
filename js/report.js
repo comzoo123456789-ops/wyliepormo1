@@ -124,6 +124,19 @@ function barRow(label, value, max, color, suffix) {
     </div>`).join("");
 })();
 
+// ---------- 신규 · 마감 임박 ----------
+(function feeds() {
+  const dleft = (end) => Math.round((new Date(end) - TODAY) / 86400000);
+  const fmt = (p) => `<div class="feed-row"><b>${p.brand}</b><span>${p.title}</span></div>`;
+  const news = P.filter((p) => p.posted === TODAY_STR).slice(0, 8);
+  const ends = P.filter((p) => { const d = dleft(p.period.end); return d >= 0 && d <= 3; })
+    .sort((a, b) => dleft(a.period.end) - dleft(b.period.end)).slice(0, 8);
+  $("repNew").innerHTML = news.length ? news.map(fmt).join("") : `<p class="rep-empty">오늘 신규 없음</p>`;
+  $("repEnd").innerHTML = ends.length
+    ? ends.map((p) => `<div class="feed-row"><b>${p.brand}</b><span>${p.title}</span><em>D-${dleft(p.period.end)}</em></div>`).join("")
+    : `<p class="rep-empty">마감 임박 없음</p>`;
+})();
+
 // ---------- 카테고리 × 유형 매트릭스 ----------
 (function chartMatrix() {
   const types = Object.entries(PROMO_TYPES);

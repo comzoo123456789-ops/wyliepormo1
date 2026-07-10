@@ -17,6 +17,7 @@
       <a href="index.html" class="logo"><span class="logo__dot"></span>promoboard</a>
       <nav class="header__nav">
         <a href="index.html" class="header__link">← 프로모션 목록</a>
+        <a href="company.html" class="header__link">기업센터</a>
         <a href="register.html" class="btn btn--primary">프로모션 등록</a>
       </nav>
     </div>
@@ -71,6 +72,16 @@
         <div class="ranklist" id="chartBrand"><!-- JS --></div>
       </section>
     </div>
+
+    <!-- 신규 · 마감 임박 -->
+    <section class="rep-card rep-card--wide">
+      <h2 class="rep-card__title">이번 주 신규 · 마감 임박</h2>
+      <p class="rep-card__desc">방금 올라온 프로모션과 곧 끝나는 프로모션 (노출 경쟁 구간)</p>
+      <div class="rep-two">
+        <div><div class="rep-two__h">🆕 신규 등록</div><div class="rep-feed" id="repNew"></div></div>
+        <div><div class="rep-two__h">⏰ 마감 임박 (D-3 이내)</div><div class="rep-feed" id="repEnd"></div></div>
+      </div>
+    </section>
 
     <!-- 매트릭스 -->
     <section class="rep-card rep-card--wide">

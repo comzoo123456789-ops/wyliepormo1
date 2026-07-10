@@ -32,18 +32,54 @@ export default {
       return new Response("Method Not Allowed", { status: 405 });
     }
 
+    if (path === "/api/click" && request.method === "POST") {
+      return logClick(request, env);
+    }
+    if (path === "/api/clicks" && request.method === "GET") {
+      return clickCounts(env);
+    }
+
     // 정적 자산
     return env.ASSETS.fetch(request);
   },
 
-  // 매일 만료 프로모션 자동 삭제 (cron)
+  // 매일: 만료 프로모션 자동 삭제 + 일일 스냅샷 적재 (cron)
   async scheduled(event, env, ctx) {
     if (!env.DB) return;
-    ctx.waitUntil(
-      env.DB.prepare("DELETE FROM promos WHERE end_date < ?").bind(TODAY_STR()).run()
-    );
+    ctx.waitUntil((async () => {
+      await env.DB.prepare("DELETE FROM promos WHERE end_date < ?").bind(TODAY_STR()).run();
+      // 추이 리포트용 일일 스냅샷 (누적되면 시계열 분석 가능)
+      await env.DB.prepare(
+        "INSERT OR REPLACE INTO snapshots (date, clicks, promos) VALUES (?, (SELECT COUNT(*) FROM clicks), (SELECT COUNT(*) FROM promos))"
+      ).bind(TODAY_STR()).run();
+    })());
   },
 };
+
+// ---------- 클릭 로깅 (실제 유입/CTR 기반) ----------
+async function logClick(request, env) {
+  if (!env.DB) return json({ ok: false });
+  try {
+    const { id } = await request.json();
+    if (id != null) await env.DB.prepare("INSERT INTO clicks (promo_id) VALUES (?)").bind(String(id)).run();
+    return json({ ok: true });
+  } catch (e) {
+    return json({ ok: false });
+  }
+}
+
+// 프로모션별 클릭 수 { id: count }
+async function clickCounts(env) {
+  if (!env.DB) return json({});
+  try {
+    const { results } = await env.DB.prepare("SELECT promo_id, COUNT(*) c FROM clicks GROUP BY promo_id").all();
+    const out = {};
+    (results || []).forEach((r) => (out[r.promo_id] = r.c));
+    return json(out);
+  } catch (e) {
+    return json({});
+  }
+}
 
 // ---------- 목록 조회 ----------
 async function listPromos(env) {

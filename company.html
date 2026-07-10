@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>기업 인텔리전스 센터 · 프로모보드</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&display=swap" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="header__inner">
+      <a href="index.html" class="logo"><span class="logo__dot"></span>promoboard</a>
+      <nav class="header__nav">
+        <a href="index.html" class="header__link">프로모션</a>
+        <a href="report.html" class="header__link">인텔리전스</a>
+        <a href="#" class="header__link" id="coLogout" hidden>로그아웃</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="rep-hero">
+    <div class="rep-hero__inner">
+      <span class="rep-hero__eyebrow">Company Intelligence Center</span>
+      <h1 class="rep-hero__title">기업 인텔리전스 센터</h1>
+      <p class="rep-hero__sub">우리 브랜드가 카테고리 안에서 어느 위치인지, 어떤 고객이 반응하는지 데이터로 확인하세요.</p>
+    </div>
+  </section>
+
+  <main class="co">
+    <!-- 로그인(데모: 브랜드 선택) -->
+    <section class="co-login" id="coLogin">
+      <div class="co-login__card">
+        <h2>기업 로그인 <span class="co-demo">데모</span></h2>
+        <p>실제 서비스에서는 사업자 인증 로그인. 지금은 데모로 브랜드를 선택하면 해당 브랜드의 인텔리전스가 나옵니다.</p>
+        <div class="co-login__row">
+          <select id="coBrandSelect"></select>
+          <button class="btn btn--primary btn--lg" id="coEnter">데이터 보기 →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 대시보드 -->
+    <section id="coDash" hidden>
+      <div class="co-head">
+        <span class="co-avatar" id="coAvatar"></span>
+        <div>
+          <div class="co-name" id="coName"></div>
+          <div class="co-groups" id="coGroups"></div>
+        </div>
+        <button class="btn btn--soft" id="coSwitch">브랜드 변경</button>
+      </div>
+
+      <!-- 제품군(카테고리) 필터 -->
+      <div class="co-filter">
+        <span class="co-filter__label">제품군 선택</span>
+        <div class="co-filter__chips" id="coSubs"></div>
+      </div>
+
+      <!-- KPI -->
+      <div class="co-kpis" id="coKpis"></div>
+
+      <div class="rep-grid">
+        <!-- 연령대 세분화 -->
+        <section class="rep-card">
+          <h2 class="rep-card__title">연령대별 유입 · 클릭 <span class="co-demo">데모</span></h2>
+          <p class="rep-card__desc">방문자 대비 URL 접속(클릭)과 클릭률</p>
+          <div class="co-agewrap"><table class="co-age" id="coAge"></table></div>
+        </section>
+        <!-- 경쟁사 유입 점유율 -->
+        <section class="rep-card">
+          <h2 class="rep-card__title">경쟁사 대비 유입 점유율(SoV)</h2>
+          <p class="rep-card__desc" id="coSovDesc">같은 카테고리 내 노출 점유율</p>
+          <div class="ranklist" id="coSov"></div>
+        </section>
+      </div>
+
+      <!-- 내 프로모션 -->
+      <section class="rep-card rep-card--wide">
+        <h2 class="rep-card__title">우리 브랜드 진행 프로모션</h2>
+        <p class="rep-card__desc" id="coPromoDesc"></p>
+        <div class="co-promos" id="coPromos"></div>
+      </section>
+
+      <p class="rep-note" id="coNote"></p>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="footer__copy" style="border:none">© 2026 promoboard · Company Intelligence</div></footer>
+
+  <script src="js/icons.js"></script>
+  <script src="data/categories.js"></script>
+  <script src="data/promotions.js"></script>
+  <script src="js/company.js"></script>
+</body>
+</html>
