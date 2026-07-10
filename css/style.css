@@ -1005,6 +1005,33 @@ body.is-biz .js-biz { display: inline; }
 .ld--dark .ld-spark span { background: #e6a58f; }
 .co-live-card { padding-top: 22px; }
 
+/* 광고주 히어로 인텔리전스 패널 (<> 페이저, 다크) */
+.bh-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+.bh-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.bh-tab { padding: 8px 14px; border-radius: 999px; font-size: 0.85rem; font-weight: 700; color: rgba(255, 255, 255, 0.6); background: rgba(255, 255, 255, 0.07); transition: all 0.15s; }
+.bh-tab:hover { color: #fff; }
+.bh-tab.is-active { background: #fff; color: var(--ink); }
+.bh-nav { display: flex; gap: 8px; }
+.bh-arrow { width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.28); background: rgba(255, 255, 255, 0.06); color: #fff; font-size: 1.3rem; line-height: 1; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+.bh-arrow:hover { background: #fff; color: var(--ink); }
+.bh-viewport { overflow: hidden; }
+.bh-track { display: flex; align-items: flex-start; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.3, 1); }
+.bh-slide { flex: 0 0 100%; min-width: 0; }
+.bh-sub { font-size: 0.8rem; font-weight: 700; color: rgba(255, 255, 255, 0.7); margin-bottom: 12px; }
+.bh-2col { display: grid; grid-template-columns: 1.4fr 1fr; gap: 22px; align-items: start; }
+.kw-cloud { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; }
+.kw { color: #fff; font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; }
+.kw-list { display: flex; flex-direction: column; gap: 6px; }
+.kwrow { display: grid; grid-template-columns: 22px 1fr auto; align-items: center; gap: 8px; font-size: 0.84rem; color: rgba(255, 255, 255, 0.85); padding-bottom: 6px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+.kwrow b { color: #e6a58f; font-weight: 800; }
+.kwrow span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.kwrow em { font-style: normal; color: rgba(255, 255, 255, 0.55); font-weight: 700; }
+.bh-first { background: rgba(181, 86, 59, 0.2); border: 1px solid rgba(181, 86, 59, 0.5); border-radius: 14px; padding: 20px 22px; margin-bottom: 14px; }
+.bh-first__no { font-size: 0.72rem; font-weight: 800; color: #e6a58f; letter-spacing: 0.04em; }
+.bh-first__t { font-size: 1.4rem; font-weight: 800; color: #fff; margin: 8px 0 4px; letter-spacing: -0.02em; }
+.bh-first__b { font-size: 0.85rem; color: rgba(255, 255, 255, 0.7); }
+.bh-empty { color: rgba(255, 255, 255, 0.6); }
+
 /* ================= 반응형 ================= */
 @media (max-width: 1024px) {
   .hero__title { font-size: 2.5rem; }
@@ -1064,4 +1091,5 @@ body.is-biz .js-biz { display: inline; }
   .co-login__row { flex-direction: column; }
   .rep-two { grid-template-columns: 1fr; gap: 18px; }
   .co-pos-grid { grid-template-columns: 1fr; }
+  .bh-2col { grid-template-columns: 1fr; gap: 16px; }
 }

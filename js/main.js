@@ -370,13 +370,17 @@ renderNav();
 renderTypebar();
 renderGrid();
 
-// 히어로 우측: 기업회원이면 실시간 대시보드, 아니면 인기 캐러셀
+// 기업회원 로그인 시: 히어로를 인텔리전스 패널로 전환(왼쪽 홍보 문구 제거, 전폭)
 const _auth = window.AUTH && window.AUTH.get();
 const _biz = !!(_auth && _auth.role === "business" && _auth.brand);
-if (_biz && window.renderLiveDash) {
+if (_biz && window.renderBizHero) {
+  const inner = document.querySelector(".hero__inner");
+  const text = document.querySelector(".hero__text");
   const hc = document.getElementById("heroCarousel"), hd = document.getElementById("heroDash");
+  if (text) text.style.display = "none";        // "지금 어떤 브랜드가..." 문구 제거
+  if (inner) inner.style.gridTemplateColumns = "1fr"; // 전폭
   if (hc) hc.hidden = true;
-  if (hd) { hd.hidden = false; window.renderLiveDash(hd, _auth.brand); }
+  if (hd) { hd.hidden = false; hd.className = ""; window.renderBizHero(hd, _auth.brand); }
   else { renderHotroll(); hotAuto(); }
 } else {
   renderHotroll();

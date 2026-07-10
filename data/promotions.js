@@ -440,6 +440,24 @@ const PROMOS = [
     title: "데카트론 여름 스포츠·아웃도어 특가",
     desc: "러닝·등산·수영 등 전 스포츠 용품과 의류 가성비 특가.",
     period: { start: "2026-07-01", end: "2026-07-31" }, posted: "2026-07-09", link: "https://www.decathlon.co.kr/" },
+
+  // ===== 애슬레저 (대형 플랫폼 입점 브랜드) =====
+  { id: 97, type: "brand", group: "sports", sub: "스포츠웨어", promoType: "sale", brand: "룰루레몬",
+    title: "룰루레몬 시즌 스타일 · We Made Too Much",
+    desc: "얼라인·에너지 등 인기 레깅스·요가웨어와 한정 특가(위메이드투머치).",
+    period: { start: "2026-07-01", end: "2026-07-25" }, posted: "2026-07-09", link: "https://www.lululemon.co.kr/" },
+  { id: 98, type: "brand", group: "sports", sub: "스포츠웨어", promoType: "sale", brand: "젝시믹스",
+    title: "젝시믹스 여름 애슬레저 세일",
+    desc: "블랙라벨 레깅스·수영복 등 여름 애슬레저 시즌 세일.",
+    period: { start: "2026-07-01", end: "2026-07-20" }, posted: "2026-07-09", link: "https://www.xexymix.com/" },
+  { id: 99, type: "brand", group: "sports", sub: "스포츠웨어", promoType: "coupon", brand: "안다르",
+    title: "안다르 레깅스 쿠폰 · 신상 기획전",
+    desc: "에어리·힐업 레깅스와 신상 요가·필라테스 웨어 쿠폰 기획전.",
+    period: { start: "2026-07-01", end: "2026-07-31" }, posted: "2026-07-09", link: "https://www.andar.co.kr/" },
+  { id: 100, type: "brand", group: "sports", sub: "스포츠웨어", promoType: "sale", brand: "뮬라웨어",
+    title: "뮬라웨어 여름 액티브웨어 특가",
+    desc: "인기 레깅스·브라탑·수영복 여름 시즌 특가.",
+    period: { start: "2026-07-01", end: "2026-07-20" }, posted: "2026-07-09", link: "https://www.mulawear.com/" },
 ];
 
 // 각 브랜드 공식 페이지에서 추출한 대표 이미지(og:image). 로드 실패 시 모노그램으로 자동 대체.
@@ -525,6 +543,10 @@ const PROMO_IMAGES = {
   90: "https://images.puma.net/images/fn/~regional~JPN~others~KOP~NavPromo~FH20~OG_image_test.png/fmt/jpg",
   93: "https://www.fila.co.kr/cdn/shop/files/1_87792c34-da59-46da-971d-e52664b893e7.jpg?v=1772691227",
   94: "https://www.converse.co.kr/web/upload/seo_og_image.png",
+  // 97 룰루레몬: og 미확보 → 모노그램
+  98: "https://www.xexymix.com/shopimages/xexymix/all_og__20260327110604phpDbkZJD.jpg",
+  99: "https://www.andar.co.kr/common/main/andar_thum.jpg",
+  100: "https://www.mulawear.com/web/upload/share-image-1-f7e644f0824f824ef437cac374970bef.png",
 };
 
 // 전시용 지표 시드(실서비스에선 서버 집계값). id 기반 결정적 계산으로 매번 동일.
