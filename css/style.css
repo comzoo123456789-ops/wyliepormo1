@@ -1155,6 +1155,14 @@ body.is-admin .js-admin { display: inline-flex; }
   .ld-kpis { grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
   .ld-kpis strong { font-size: 1.05rem; }
   .bh-tabs { width: 100%; }
+  /* 정렬 줄: 넘치지 않게 가로 스크롤 */
+  .listhead { flex-wrap: wrap; gap: 6px 10px; }
+  .sort { margin-left: 0; width: 100%; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+  .sort::-webkit-scrollbar { display: none; }
+  .sort__btn { flex: 0 0 auto; white-space: nowrap; }
+  /* 가로 넘침 방지 */
+  html, body { overflow-x: hidden; }
+  .wrap, .content { max-width: 100%; }
   .grid { grid-template-columns: 1fr; gap: 16px; }
   .header__inner { padding: 0 18px; gap: 14px; }
   .grid2 { grid-template-columns: 1fr; gap: 0; }
