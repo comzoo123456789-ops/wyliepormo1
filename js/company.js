@@ -25,6 +25,14 @@ const groupById = (type, gid) => (CATEGORIES[type] || { groups: [] }).groups.fin
 const groupLabel = (type, gid) => { const g = groupById(type, gid); return g ? g.label : gid; };
 const groupOf = (p) => groupById(p.type, p.group) || { tint: "#eee", ink: "#555", label: "" };
 
+// 공용 헬퍼
+const avg = (a) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0);
+const mode = (a) => { const m = {}; a.forEach((x) => (m[x] = (m[x] || 0) + 1)); const e = Object.entries(m).sort((x, y) => y[1] - x[1])[0]; return e ? e[0] : null; };
+const tl = (k) => (PROMO_TYPES[k] || {}).label || k;
+const TODAY0 = new Date(); TODAY0.setHours(0, 0, 0, 0);
+const isEnded = (p) => { const e = new Date(p.period.end); e.setHours(0, 0, 0, 0); return e < TODAY0; };
+const dLeft = (end) => Math.round((new Date(end) - TODAY0) / 86400000);
+
 // 브랜드 목록
 const BRANDS = [...new Set(PROMOS.map((p) => p.brand))].sort((a, b) => a.localeCompare(b, "ko"));
 const brandPromos = (b) => PROMOS.filter((p) => p.brand === b);
@@ -41,9 +49,8 @@ const state = { brand: null, sub: "all" };
 // ---------- 요일·시간대 피크타임 (데모) ----------
 const PEAK_DAYS = ["월", "화", "수", "목", "금", "토", "일"];
 const PEAK_BUCKETS = [["오전", "9–12시"], ["점심", "12–14시"], ["오후", "14–18시"], ["저녁", "18–22시"], ["심야", "22–2시"]];
-function renderPeak(brand) {
-  const el = document.getElementById("coPeak");
-  if (!el) return;
+// 요일×시간대 강도 행렬 + 피크 (데모, 결정적)
+function peakMatrix(brand) {
   let peak = { v: -1, d: 0, b: 0 };
   const m = [];
   for (let d = 0; d < 7; d++) {
@@ -60,6 +67,12 @@ function renderPeak(brand) {
     }
     m.push(row);
   }
+  return { m, peak };
+}
+function renderPeak(brand) {
+  const el = document.getElementById("coPeak");
+  if (!el) return;
+  const { m, peak } = peakMatrix(brand);
   const cells = PEAK_BUCKETS.map((bk, b) => {
     const row = PEAK_DAYS.map((_, d) => {
       const v = m[d][b], a = (0.08 + (v / 100) * 0.85).toFixed(2);
@@ -132,14 +145,18 @@ function renderDash() {
 
   const m = metrics(b, state.sub);
 
-  // KPI
+  // KPI (전주 대비 ▲▼ — 데모, 결정적)
   const fmt = (n) => n.toLocaleString();
+  const wow = (key) => -9 + (hash(b + state.sub + key) % 29); // -9 ~ +19%
   $("coKpis").innerHTML = [
-    { n: m.share.toFixed(1) + "%", l: "카테고리 유입 점유율", s: "경쟁사 대비" },
-    { n: fmt(m.visitors), l: "노출(방문자)", s: state.sub === "all" ? "전체 제품군" : state.sub },
-    { n: fmt(m.totalClicks), l: "URL 클릭수", s: "프로모션 유입" },
-    { n: m.avgCtr.toFixed(1) + "%", l: "평균 클릭률(CTR)", s: "클릭/방문" },
-  ].map((k) => `<div class="rep-kpi"><strong>${k.n}</strong><span>${k.l}</span><small>${k.s}</small></div>`).join("");
+    { n: m.share.toFixed(1) + "%", l: "카테고리 유입 점유율", s: "경쟁사 대비", k: "share" },
+    { n: fmt(m.visitors), l: "노출(방문자)", s: state.sub === "all" ? "전체 제품군" : state.sub, k: "visit" },
+    { n: fmt(m.totalClicks), l: "URL 클릭수", s: "프로모션 유입", k: "click" },
+    { n: m.avgCtr.toFixed(1) + "%", l: "평균 클릭률(CTR)", s: "클릭/방문", k: "ctr" },
+  ].map((x) => {
+    const d = wow(x.k), up = d >= 0;
+    return `<div class="rep-kpi"><strong>${x.n}</strong><span class="co-delta ${up ? "co-up" : "co-down"}">${up ? "▲" : "▼"} ${Math.abs(d)}% <em>전주</em></span><span>${x.l}</span><small>${x.s}</small></div>`;
+  }).join("");
 
   // 연령대 표
   const maxV = Math.max(...m.ages.map((a) => a.visitors), 1);
@@ -185,11 +202,103 @@ function renderDash() {
       </div>`).join("")
     : `<p class="rep-empty">해당 제품군 프로모션이 없습니다.</p>`;
 
-  $("coNote").textContent = "※ 유입·클릭·연령대는 데모(시뮬레이션) 지표입니다. 실제 서비스에서는 클릭 로깅과 로그인 인구통계 데이터로 산출됩니다. 유입 점유율은 집계된 조회수 기반으로 계산됩니다.";
+  renderBrief(b, m);
+  renderBench(b, m);
+  renderTodo(b, m);
+
+  $("coNote").textContent = "※ 유입·클릭·연령대·전주대비·CTR은 데모(시뮬레이션) 지표입니다. 벤치마크 진단·To-Do(마감·포화도)는 집계된 프로모션 데이터 기반의 실계산입니다.";
+}
+
+// ---------- 오늘의 브리핑 (한 줄 요약) ----------
+function renderBrief(brand, m) {
+  const el = $("coBrief");
+  if (!el) return;
+  const pk = peakMatrix(brand).peak;
+  const soon = brandPromos(brand).filter((p) => { const d = dLeft(p.period.end); return d >= 0 && d <= 3; }).length;
+  const above = m.cat.share >= m.cat.avgShare;
+  el.innerHTML =
+    `<span class="co-brief__dot"></span>오늘의 브리핑 · ` +
+    `<b>SoV ${m.cat.share.toFixed(1)}%</b> <span class="${above ? "co-up" : "co-down"}">${above ? "평균 이상" : "평균 이하"}</span> · ` +
+    `마감 임박 <b>${soon}건</b> · ` +
+    `추천 푸시 <b>${PEAK_DAYS[pk.d]}요일 ${PEAK_BUCKETS[pk.b][0]}</b>`;
+}
+
+// ---------- 경쟁 벤치마크 진단 (카테고리 평균 대비) ----------
+function renderBench(brand, m) {
+  const el = $("coBench");
+  if (!el) return;
+  const prim = brandPrimary(brand);
+  const cat = PROMOS.filter((p) => p.type === prim.type && p.group === prim.gid);
+  const mineP = cat.filter((p) => p.brand === brand);
+  const rows = [];
+
+  // 할인율
+  const catD = cat.filter((p) => p.discount).map((p) => p.discount);
+  const myD = mineP.filter((p) => p.discount).map((p) => p.discount);
+  if (myD.length && catD.length) {
+    const ma = Math.round(avg(myD)), ca = Math.round(avg(catD)), up = ma >= ca;
+    rows.push({ ok: up, t: `할인율 ${ma}% <small>(카테고리 평균 ${ca}%)</small>`,
+      s: up ? "평균보다 강한 가격 혜택 — 가격 경쟁력이 우위입니다." : "평균보다 약합니다 — 할인 폭 확대나 증정 결합을 검토하세요." });
+  }
+  // 주력 방식(유형)
+  const catType = mode(cat.map((p) => p.promoType)), myType = mode(mineP.map((p) => p.promoType));
+  if (catType && myType) {
+    const same = catType === myType;
+    rows.push({ ok: same, t: `주력 방식 ${tl(myType)} <small>(카테고리 주력 ${tl(catType)})</small>`,
+      s: same ? "시장 흐름과 같은 방식으로 경쟁하고 있습니다." : `카테고리는 ${tl(catType)} 중심입니다 — 혜택 방식 다변화를 검토하세요.` });
+  }
+  // 진행 물량
+  const brands = new Set(cat.map((p) => p.brand)).size || 1;
+  const avgCnt = cat.length / brands, myCnt = mineP.length, upC = myCnt >= avgCnt;
+  rows.push({ ok: upC, t: `진행 물량 ${myCnt}건 <small>(브랜드당 평균 ${avgCnt.toFixed(1)}건)</small>`,
+    s: upC ? "평균 이상으로 노출 물량을 확보하고 있습니다." : "노출 물량이 평균 이하 — 프로모션 수를 늘리면 SoV 개선에 유리합니다." });
+  // 노출 점유율(SoV)
+  const upS = m.cat.share >= m.cat.avgShare;
+  rows.push({ ok: upS, t: `노출 점유율 ${m.cat.share.toFixed(1)}% <small>(평균 ${m.cat.avgShare.toFixed(1)}%)</small>`,
+    s: upS ? "카테고리 평균 이상으로 노출되고 있습니다." : "노출이 평균 이하 — 카피·타이밍 최적화로 조회수를 끌어올리세요." });
+
+  el.innerHTML = rows.map((r) =>
+    `<div class="co-bench ${r.ok ? "is-ok" : "is-warn"}"><span class="co-bench__ic">${r.ok ? "✅" : "⚠️"}</span><div class="co-bench__body"><b>${r.t}</b><span>${r.s}</span></div></div>`).join("");
+}
+
+// ---------- 이번 주 액션 To-Do ----------
+function renderTodo(brand, m) {
+  const el = $("coTodo");
+  if (!el) return;
+  const todos = [];
+  // 1) 마감 임박 내 프로모션
+  brandPromos(brand).forEach((p) => { const d = dLeft(p.period.end); if (d >= 0 && d <= 3) todos.push(`⏰ '<b>${p.title}</b>' D-${d} — 마감 전 재노출·리마인드 발송`); });
+  // 2) 내 참여 카테고리 중 여유(포화도 낮음) 진입 적기
+  [...new Set(brandPromos(brand).map((p) => p.group))].forEach((gid) => {
+    const n = PROMOS.filter((p) => p.type === "brand" && p.group === gid && !isEnded(p)).length;
+    if (n < 7) todos.push(`🟢 <b>${groupLabel("brand", gid)}</b> 카테고리 여유(진행 ${n}건) — 지금이 노출 확보 적기`);
+  });
+  // 3) SoV 열위면 개선 권장
+  if (m.cat.share < m.cat.avgShare) todos.push(`📉 노출 점유율이 평균 이하 — 대표 프로모션 카피·이미지 교체 A/B 검토`);
+  // 4) 피크타임 푸시 예약
+  const pk = peakMatrix(brand).peak;
+  todos.push(`📣 <b>${PEAK_DAYS[pk.d]}요일 ${PEAK_BUCKETS[pk.b][0]}(${PEAK_BUCKETS[pk.b][1]})</b>에 카카오톡 푸시·광고 집행 예약`);
+
+  el.innerHTML = todos.slice(0, 6).map((t, i) =>
+    `<label class="co-todo"><input type="checkbox" /><span class="co-todo__box"></span><span class="co-todo__txt">${t}</span></label>`).join("")
+    || `<p class="rep-empty">지금 급한 액션이 없습니다.</p>`;
 }
 
 // ---------- 이벤트 ----------
 $("coSubs").addEventListener("click", (e) => { const c = e.target.closest(".co-chip"); if (!c) return; state.sub = c.dataset.sub; renderDash(); });
+
+// 탭 전환
+const coTabs = $("coTabs");
+if (coTabs) coTabs.addEventListener("click", (e) => {
+  const b = e.target.closest(".rtab"); if (!b) return;
+  const t = b.dataset.tab;
+  coTabs.querySelectorAll(".rtab").forEach((x) => x.classList.toggle("is-active", x === b));
+  document.querySelectorAll("#coDash .rtab-panel").forEach((pn) => { pn.hidden = pn.dataset.panel !== t; });
+});
+
+// PDF 내보내기
+const coPdf = $("coPdf");
+if (coPdf) coPdf.addEventListener("click", () => window.print());
 
 // ---------- 인증: 로그인한 사업자 브랜드만 ----------
 const auth = window.AUTH && window.AUTH.get();

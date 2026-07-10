@@ -27,61 +27,86 @@
     <div class="rep-hero__inner">
       <span class="rep-hero__eyebrow">Company Intelligence Center</span>
       <h1 class="rep-hero__title">기업 인텔리전스 센터</h1>
-      <p class="rep-hero__sub">우리 브랜드가 카테고리 안에서 어느 위치인지, 어떤 고객이 반응하는지 데이터로 확인하세요.</p>
+      <p class="rep-hero__sub">우리 브랜드가 카테고리 안에서 어느 위치인지, 지금 무엇을 해야 하는지 데이터로 확인하세요.</p>
     </div>
   </section>
 
   <main class="co">
-    <!-- 대시보드 (사업자 본인 브랜드 전용) -->
     <section id="coDash" hidden>
+      <!-- 브랜드 헤더 + PDF -->
       <div class="co-head">
         <span class="co-avatar" id="coAvatar"></span>
-        <div>
+        <div class="co-head__meta">
           <div class="co-name" id="coName"></div>
           <div class="co-groups" id="coGroups"></div>
         </div>
+        <button class="btn btn--soft rep-pdf co-head__pdf" id="coPdf">PDF로 내보내기</button>
       </div>
 
-      <!-- 실시간 대시보드 -->
-      <section class="rep-card rep-card--wide co-live-card"><div id="coLive" class="ld ld--card"></div></section>
+      <!-- 오늘의 브리핑 (한 줄 요약) -->
+      <div class="co-brief" id="coBrief"></div>
 
-      <!-- 요일·시간대 피크타임 가이드 -->
-      <section class="rep-card rep-card--wide">
-        <h2 class="rep-card__title">요일·시간대 유입 피크 <span class="co-demo">데모</span></h2>
-        <p class="rep-card__desc">유입이 몰리는 요일·시간대 — 카톡 푸시·광고 집행 타이밍 추천</p>
-        <div id="coPeak"></div>
-      </section>
-
-      <!-- 제품군(카테고리) 필터 -->
+      <!-- 제품군(카테고리) 필터 — 전 탭 공통 -->
       <div class="co-filter">
-        <span class="co-filter__label">제품군 선택</span>
+        <span class="co-filter__label">제품군</span>
         <div class="co-filter__chips" id="coSubs"></div>
       </div>
 
-      <!-- KPI -->
-      <div class="co-kpis" id="coKpis"></div>
+      <!-- 탭 -->
+      <nav class="rtab-nav" id="coTabs">
+        <button class="rtab is-active" data-tab="perf">성과</button>
+        <button class="rtab" data-tab="cust">고객 · 타이밍</button>
+        <button class="rtab" data-tab="comp">경쟁</button>
+        <button class="rtab" data-tab="promo">내 프로모션</button>
+      </nav>
 
-      <div class="rep-grid">
-        <!-- 연령대 세분화 -->
-        <section class="rep-card">
+      <!-- 탭 ① 성과 -->
+      <div class="rtab-panel" data-panel="perf">
+        <section class="rep-card rep-card--wide co-live-card"><div id="coLive" class="ld ld--card"></div></section>
+        <div class="co-kpis" id="coKpis"></div>
+        <section class="rep-card rep-card--wide">
+          <h2 class="rep-card__title">이번 주 액션 To-Do</h2>
+          <p class="rep-card__desc">데이터가 지금 권하는 실행 항목 — 마감·진입 타이밍·푸시</p>
+          <div class="co-todos" id="coTodo"></div>
+        </section>
+      </div>
+
+      <!-- 탭 ② 고객 · 타이밍 -->
+      <div class="rtab-panel" data-panel="cust" hidden>
+        <section class="rep-card rep-card--wide">
+          <h2 class="rep-card__title">요일·시간대 유입 피크 <span class="co-demo">데모</span></h2>
+          <p class="rep-card__desc">유입이 몰리는 요일·시간대 — 카톡 푸시·광고 집행 타이밍 추천</p>
+          <div id="coPeak"></div>
+        </section>
+        <section class="rep-card rep-card--wide">
           <h2 class="rep-card__title">연령대별 유입 · 클릭 <span class="co-demo">데모</span></h2>
           <p class="rep-card__desc">방문자 대비 URL 접속(클릭)과 클릭률</p>
           <div class="co-agewrap"><table class="co-age" id="coAge"></table></div>
         </section>
-        <!-- 경쟁사 유입 점유율 -->
-        <section class="rep-card">
+      </div>
+
+      <!-- 탭 ③ 경쟁 -->
+      <div class="rtab-panel" data-panel="comp" hidden>
+        <section class="rep-card rep-card--wide">
           <h2 class="rep-card__title">경쟁사 대비 유입 점유율(SoV)</h2>
           <p class="rep-card__desc" id="coSovDesc">같은 카테고리 내 노출 점유율</p>
           <div class="ranklist" id="coSov"></div>
         </section>
+        <section class="rep-card rep-card--wide">
+          <h2 class="rep-card__title">경쟁 벤치마크 진단</h2>
+          <p class="rep-card__desc">내 할인율·방식·물량을 카테고리 평균과 비교한 강·약점</p>
+          <div id="coBench"></div>
+        </section>
       </div>
 
-      <!-- 내 프로모션 -->
-      <section class="rep-card rep-card--wide">
-        <h2 class="rep-card__title">우리 브랜드 진행 프로모션</h2>
-        <p class="rep-card__desc" id="coPromoDesc"></p>
-        <div class="co-promos" id="coPromos"></div>
-      </section>
+      <!-- 탭 ④ 내 프로모션 -->
+      <div class="rtab-panel" data-panel="promo" hidden>
+        <section class="rep-card rep-card--wide">
+          <h2 class="rep-card__title">우리 브랜드 진행 프로모션</h2>
+          <p class="rep-card__desc" id="coPromoDesc"></p>
+          <div class="co-promos" id="coPromos"></div>
+        </section>
+      </div>
 
       <p class="rep-note" id="coNote"></p>
     </section>
