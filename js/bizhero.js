@@ -101,13 +101,28 @@ window.renderBizHero = function (el, brand) {
     return head + `<div class="kw-list">${rest}</div>`;
   }
 
-  const slides = [
-    { label: "실시간 대시보드", mount: (c) => { c.className = "bh-slide ld ld--dark"; if (window.renderLiveDash) window.renderLiveDash(c, brand); } },
-    { label: "경쟁 위치", mount: (c) => { c.className = "bh-slide"; c.innerHTML = sovHTML(); } },
-    { label: "고객 연령대", mount: (c) => { c.className = "bh-slide"; c.innerHTML = ageHTML(); } },
-    { label: "키워드 순위", mount: (c) => { c.className = "bh-slide"; c.innerHTML = keywordsHTML(); } },
-    { label: "인기 프로모션", mount: (c) => { c.className = "bh-slide"; c.innerHTML = rankingsHTML(); } },
-  ];
+  // 슬라이드 정의 (마이페이지에서 켜고 끌 수 있음)
+  const slideDefs = {
+    live: { label: "실시간 대시보드", mount: (c) => { c.className = "bh-slide ld ld--dark"; if (window.renderLiveDash) window.renderLiveDash(c, brand); } },
+    sov: { label: "경쟁 위치", mount: (c) => { c.className = "bh-slide"; c.innerHTML = sovHTML(); } },
+    age: { label: "고객 연령대", mount: (c) => { c.className = "bh-slide"; c.innerHTML = ageHTML(); } },
+    keyword: { label: "키워드 순위", mount: (c) => { c.className = "bh-slide"; c.innerHTML = keywordsHTML(); } },
+    ranking: { label: "인기 프로모션", mount: (c) => { c.className = "bh-slide"; c.innerHTML = rankingsHTML(); } },
+  };
+  const enabled = (window.HERO ? window.HERO.get(brand) : Object.keys(slideDefs)).filter((k) => slideDefs[k]);
+  const slides = enabled.map((k) => ({ key: k, label: slideDefs[k].label, mount: slideDefs[k].mount }));
+
+  // 마이페이지에서 변경 시 실시간 반영 (다른 탭 포함)
+  if (!window.__bhStorageBound) {
+    window.__bhStorageBound = true;
+    window.addEventListener("storage", (e) => { if (e.key === (window.HERO && window.HERO.KEY)) window.renderBizHero(el, brand); });
+  }
+
+  // 표시할 항목이 없으면 안내
+  if (!slides.length) {
+    el.innerHTML = `<div class="bh"><div class="bh-empty" style="padding:30px 4px">표시할 항목이 없습니다.<br /><a href="mypage.html" style="color:#e6a58f;font-weight:700">마이페이지</a>에서 메인에 보일 항목을 선택하세요.</div></div>`;
+    return;
+  }
 
   el.innerHTML = `
     <div class="bh">

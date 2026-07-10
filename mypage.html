@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>마이페이지 · 프로모보드</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&display=swap" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-require="business">
+  <header class="header">
+    <div class="header__inner">
+      <a href="index.html" class="logo"><span class="logo__dot"></span>promoboard</a>
+      <nav class="header__nav">
+        <a href="index.html" class="header__link">프로모션</a>
+        <a href="report.html" class="header__link js-biz">인텔리전스</a>
+        <a href="company.html" class="header__link js-biz">기업센터</a>
+        <span id="authArea" class="auth-area"></span>
+        <a href="register.html" class="btn btn--primary js-biz">프로모션 등록</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="rep-hero">
+    <div class="rep-hero__inner">
+      <span class="rep-hero__eyebrow">My Page</span>
+      <h1 class="rep-hero__title">마이페이지</h1>
+      <p class="rep-hero__sub">메인 화면 상단 패널에 우리 브랜드의 어떤 인텔리전스를 보여줄지 직접 고르세요.</p>
+    </div>
+  </section>
+
+  <main class="co">
+    <section id="mpWrap" hidden>
+      <div class="co-head">
+        <span class="co-avatar" id="mpAvatar"></span>
+        <div class="co-head__meta">
+          <div class="co-name" id="mpName"></div>
+          <div class="co-groups">메인 화면에 표시할 항목을 관리합니다.</div>
+        </div>
+      </div>
+
+      <div class="mp-grid">
+        <!-- 체크리스트 -->
+        <section class="rep-card rep-card--wide">
+          <h2 class="rep-card__title">메인 화면에 표시할 항목</h2>
+          <p class="rep-card__desc">체크한 항목이 홈 상단 패널에 <b>&lt; &gt;</b>로 표시됩니다. 변경은 즉시 저장·반영됩니다.</p>
+          <div class="mp-list" id="mpList"></div>
+          <div class="mp-actions">
+            <a href="index.html" class="btn btn--primary">메인 화면에서 보기 →</a>
+            <span class="mp-hint" id="mpHint"></span>
+          </div>
+        </section>
+
+        <!-- 실시간 미리보기 -->
+        <section class="rep-card rep-card--wide">
+          <h2 class="rep-card__title">미리보기 <span class="co-demo">실시간</span></h2>
+          <p class="rep-card__desc">체크를 바꾸면 아래 패널이 메인 화면과 동일하게 즉시 바뀝니다.</p>
+          <div class="ld ld--dark mp-preview" id="mpPreview"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="footer__copy" style="border:none">© 2026 promoboard · My Page</div></footer>
+
+  <script src="js/icons.js"></script>
+  <script src="data/categories.js"></script>
+  <script src="data/promotions.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/traffic.js"></script>
+  <script src="js/livedash.js"></script>
+  <script src="js/heroprefs.js"></script>
+  <script src="js/bizhero.js"></script>
+  <script src="js/mypage.js"></script>
+</body>
+</html>
