@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>프로모션 인텔리전스 리포트 · 프로모보드</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&display=swap" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="header__inner">
+      <a href="index.html" class="logo"><span class="logo__dot"></span>promoboard</a>
+      <nav class="header__nav">
+        <a href="index.html" class="header__link">← 프로모션 목록</a>
+        <a href="register.html" class="btn btn--primary">프로모션 등록</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 리포트 히어로 -->
+  <section class="rep-hero">
+    <div class="rep-hero__inner">
+      <span class="rep-hero__eyebrow">Brand Promotion Intelligence · Weekly Report</span>
+      <h1 class="rep-hero__title">프로모션 인텔리전스 리포트</h1>
+      <p class="rep-hero__sub" id="repAsOf"></p>
+    </div>
+  </section>
+
+  <main class="rep">
+    <!-- KPI -->
+    <section class="rep-kpis" id="repKpis"><!-- JS --></section>
+
+    <div class="rep-grid">
+      <!-- 카테고리별 -->
+      <section class="rep-card">
+        <h2 class="rep-card__title">카테고리별 프로모션 수</h2>
+        <p class="rep-card__desc">지금 어느 카테고리가 가장 활발한가</p>
+        <div class="bars" id="chartCat"><!-- JS --></div>
+      </section>
+
+      <!-- 유형별 -->
+      <section class="rep-card">
+        <h2 class="rep-card__title">프로모션 유형 분포</h2>
+        <p class="rep-card__desc">할인·증정·쿠폰·체험단·신제품·기간한정</p>
+        <div class="bars" id="chartType"><!-- JS --></div>
+      </section>
+
+      <!-- 평균 할인율 -->
+      <section class="rep-card">
+        <h2 class="rep-card__title">카테고리별 평균 할인율</h2>
+        <p class="rep-card__desc">할인/기간한정 프로모션 기준</p>
+        <div class="bars" id="chartDisc"><!-- JS --></div>
+      </section>
+
+      <!-- 인기 브랜드 TOP -->
+      <section class="rep-card">
+        <h2 class="rep-card__title">인기 브랜드 TOP 10</h2>
+        <p class="rep-card__desc">조회수 기준</p>
+        <div class="ranklist" id="chartBrand"><!-- JS --></div>
+      </section>
+    </div>
+
+    <!-- 매트릭스 -->
+    <section class="rep-card rep-card--wide">
+      <h2 class="rep-card__title">카테고리 × 프로모션 유형 매트릭스</h2>
+      <p class="rep-card__desc">어떤 카테고리가 어떤 방식으로 프로모션하는지 (진한 색일수록 많음)</p>
+      <div class="matrix-wrap"><table class="matrix" id="chartMatrix"><!-- JS --></table></div>
+    </section>
+
+    <p class="rep-note">※ 본 리포트는 프로모보드에 집계된 프로모션 데이터를 기반으로 자동 생성됩니다. (전시용 지표 포함) — 실서비스에서는 실시간 조회·클릭·전환 데이터로 산출됩니다.</p>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__copy" style="border:none">© 2026 promoboard · Intelligence</div>
+  </footer>
+
+  <script src="js/icons.js"></script>
+  <script src="data/categories.js"></script>
+  <script src="data/promotions.js"></script>
+  <script src="js/report.js"></script>
+</body>
+</html>

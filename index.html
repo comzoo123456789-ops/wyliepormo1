@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>프로모보드 · 브랜드 프로모션 모아보기</title>
+  <meta name="description" content="어느 브랜드가 지금 어떤 프로모션을 하는지 한눈에" />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+  />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&display=swap"
+  />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- ===== 상단 헤더 ===== -->
+  <header class="header">
+    <div class="header__inner">
+      <a href="#" class="logo">
+        <span class="logo__dot"></span>promoboard
+      </a>
+
+      <div class="search">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path>
+        </svg>
+        <input type="text" id="searchInput" placeholder="브랜드 · 프로모션 · 가게 검색" />
+      </div>
+
+      <nav class="header__nav">
+        <a href="report.html" class="header__link">인텔리전스</a>
+        <a href="#" class="header__link">로그인</a>
+        <a href="register.html" class="btn btn--primary">프로모션 등록</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===== 히어로 (딥 잉크 패널) ===== -->
+    <section class="hero">
+      <div class="hero__inner">
+        <div class="hero__text">
+          <span class="hero__eyebrow">Brand Promotion Intelligence</span>
+          <h1 class="hero__title">지금, 어떤 브랜드가<br />무슨 프로모션을 하고 있을까</h1>
+          <p class="hero__sub">할인부터 증정 · 체험단 · 신제품까지, 흩어져 있던 브랜드 프로모션을<br class="hero__br" />카테고리별로 한자리에 모았습니다.</p>
+          <div class="hero__actions">
+            <a href="#browse" class="btn btn--light">프로모션 둘러보기</a>
+            <a href="register.html" class="btn btn--ghost">우리 브랜드 등록하기 →</a>
+          </div>
+          <div class="hero__stats">
+            <div><strong id="statTotal">0</strong><span>진행 중 프로모션</span></div>
+            <div><strong id="statBrand">0</strong><span>브랜드</span></div>
+            <div><strong id="statCat">10</strong><span>카테고리</span></div>
+          </div>
+        </div>
+
+        <!-- 인기 TOP 캐러셀 (히어로 내부) -->
+        <div class="hero__feature" aria-label="이번 주 인기 프로모션">
+          <div class="hero__feature-head">
+            <h2 class="hero__feature-title">🔥 이번 주 인기 <span>TOP 6</span></h2>
+            <div class="hotroll__nav">
+              <button class="hotroll__arrow" id="hotPrev" aria-label="이전">&lsaquo;</button>
+              <button class="hotroll__arrow" id="hotNext" aria-label="다음">&rsaquo;</button>
+            </div>
+          </div>
+          <div class="hotroll__viewport" id="hotViewport">
+            <div class="hotroll__track" id="hotTrack"><!-- JS 렌더 --></div>
+          </div>
+          <div class="hotroll__dots" id="hotDots"><!-- JS 렌더 --></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap" id="browse">
+      <!-- ===== 좌측 사이드바 (스크롤 고정) ===== -->
+      <aside class="sidebar">
+        <!-- 광고 유형 세그먼트 -->
+        <div class="segment" id="segment">
+          <button class="segment__btn is-active" data-type="brand">브랜드 광고</button>
+          <button class="segment__btn" data-type="local">소상공인 광고</button>
+        </div>
+
+        <!-- 빠른 필터 -->
+        <div class="side">
+          <span class="side__label">빠른 필터</span>
+          <div class="quicks" id="quickbar"><!-- JS 렌더 --></div>
+        </div>
+
+        <!-- 카테고리 (대분류 + 인라인 중분류) -->
+        <div class="side">
+          <span class="side__label">카테고리</span>
+          <nav class="nav" id="navbar"><!-- JS 렌더 --></nav>
+        </div>
+
+        <!-- 프로모션 유형 -->
+        <div class="side">
+          <span class="side__label">프로모션 유형</span>
+          <div class="ptypes" id="typebar"><!-- JS 렌더 --></div>
+        </div>
+      </aside>
+
+      <!-- ===== 콘텐츠 (프로모션만) ===== -->
+      <div class="content">
+        <div class="listhead">
+          <h2 class="listhead__title" id="listTitle">진행 중인 프로모션</h2>
+          <span class="listhead__count" id="listCount"></span>
+          <div class="sort" id="sortWrap">
+            <button class="sort__btn is-active" data-sort="popular">인기순</button>
+            <span class="sort__sep">·</span>
+            <button class="sort__btn" data-sort="likes">좋아요순</button>
+            <span class="sort__sep">·</span>
+            <button class="sort__btn" data-sort="discount">할인율순</button>
+            <span class="sort__sep">·</span>
+            <button class="sort__btn" data-sort="latest">최신순</button>
+            <span class="sort__sep">·</span>
+            <button class="sort__btn" data-sort="ending">마감임박순</button>
+          </div>
+        </div>
+
+        <section class="grid" id="grid"><!-- JS 렌더 --></section>
+
+        <div class="empty" id="empty" hidden>
+          <p>해당 조건에 진행 중인 프로모션이 아직 없어요.</p>
+          <a href="#" class="btn btn--outline">우리 브랜드 프로모션 등록하기</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ===== 푸터 ===== -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <div class="logo logo--footer"><span class="logo__dot"></span>promoboard</div>
+        <p class="footer__desc">브랜드·소상공인 프로모션을 한눈에</p>
+      </div>
+      <div class="footer__cols">
+        <div class="footer__col">
+          <h4>서비스</h4>
+          <a href="#">프로모션 둘러보기</a>
+          <a href="#">프로모션 등록</a>
+          <a href="#">카테고리</a>
+        </div>
+        <div class="footer__col">
+          <h4>고객지원</h4>
+          <a href="#">등록 안내</a>
+          <a href="#">자주 묻는 질문</a>
+          <a href="#">문의하기</a>
+        </div>
+        <div class="footer__col">
+          <h4>정책</h4>
+          <a href="#">이용약관</a>
+          <a href="#">개인정보처리방침</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__copy">© 2026 promoboard. All rights reserved.</div>
+  </footer>
+
+  <!-- 토스트 -->
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="js/icons.js"></script>
+  <script src="data/categories.js"></script>
+  <script src="data/promotions.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
