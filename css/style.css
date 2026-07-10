@@ -939,8 +939,10 @@ body.is-biz .js-biz { display: inline; }
 .co-age__bar span { display: block; height: 8px; border-radius: 999px; }
 
 /* 우리 위치(경쟁사 식별정보 없음) */
-.co-pos { display: flex; align-items: center; gap: 22px; }
-.co-pos__share { font-family: "Noto Serif KR", serif; font-size: 2.6rem; font-weight: 600; color: var(--accent); line-height: 1; }
+.co-pos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.co-pos-col__h { font-size: 0.78rem; font-weight: 800; color: var(--ink); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--line-2); }
+.co-pos { display: flex; align-items: center; gap: 16px; }
+.co-pos__share { font-family: "Noto Serif KR", serif; font-size: 2.1rem; font-weight: 600; color: var(--accent); line-height: 1; }
 .co-pos__share span { font-size: 1.1rem; }
 .co-pos__rows { display: flex; flex-direction: column; gap: 8px; flex: 1; }
 .co-pos__rows > div { display: flex; justify-content: space-between; font-size: 0.86rem; color: var(--muted); }
@@ -1013,4 +1015,5 @@ body.is-biz .js-biz { display: inline; }
   .co-kpis { grid-template-columns: repeat(2, 1fr); }
   .co-login__row { flex-direction: column; }
   .rep-two { grid-template-columns: 1fr; gap: 18px; }
+  .co-pos-grid { grid-template-columns: 1fr; }
 }

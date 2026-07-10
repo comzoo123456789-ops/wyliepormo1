@@ -370,15 +370,15 @@ const PROMOS = [
     period: { start: "2026-07-01", end: "2026-07-20" }, posted: "2026-07-09", link: "https://www.etude.com/kr/ko/" },
 
   // ===== 대중 브랜드 보강 (다나와 카테고리 · 스포츠/가전/PC/디지털) =====
-  { id: 80, type: "brand", group: "fashion", sub: "패션잡화", promoType: "sale", brand: "나이키",
+  { id: 80, type: "brand", group: "sports", sub: "운동화/스니커즈", promoType: "sale", brand: "나이키",
     title: "나이키 여름 시즌 세일 · 멤버 특가",
     desc: "러닝·라이프스타일 스니커즈와 애슬레저 시즌 세일. 나이키 멤버 단독 혜택.",
     period: { start: "2026-07-01", end: "2026-07-25" }, posted: "2026-07-09", link: "https://www.nike.com/kr/" },
-  { id: 81, type: "brand", group: "fashion", sub: "패션잡화", promoType: "sale", brand: "아디다스",
+  { id: 81, type: "brand", group: "sports", sub: "운동화/스니커즈", promoType: "sale", brand: "아디다스",
     title: "아디다스 여름 세일 최대 50%",
     desc: "삼바·가젤 등 인기 스니커즈와 트레이닝 웨어 시즌오프.",
     period: { start: "2026-07-01", end: "2026-07-25" }, posted: "2026-07-09", link: "https://www.adidas.co.kr/" },
-  { id: 82, type: "brand", group: "fashion", sub: "남성의류", promoType: "sale", brand: "뉴발란스",
+  { id: 82, type: "brand", group: "sports", sub: "러닝/트레이닝", promoType: "sale", brand: "뉴발란스",
     title: "뉴발란스 여름 시즌오프",
     desc: "992·530 등 인기 스니커즈와 의류 시즌오프 할인.",
     period: { start: "2026-07-01", end: "2026-07-20" }, posted: "2026-07-09", link: "https://www.nbkorea.com/" },
@@ -410,6 +410,36 @@ const PROMOS = [
     title: "닌텐도 스위치 신작·번들 프로모션",
     desc: "닌텐도 스위치 신작 타이틀과 본체 번들 프로모션.",
     period: { start: "2026-07-08", end: "2026-07-31" }, posted: "2026-07-09", link: "https://www.nintendo.co.kr/" },
+
+  // ===== 스포츠 =====
+  { id: 90, type: "brand", group: "sports", sub: "운동화/스니커즈", promoType: "sale", brand: "푸마",
+    title: "푸마 여름 시즌 세일",
+    desc: "스웨이드·팔레르모 등 인기 스니커즈와 트레이닝 웨어 시즌 세일.",
+    period: { start: "2026-07-01", end: "2026-07-25" }, posted: "2026-07-09", link: "https://kr.puma.com/" },
+  { id: 91, type: "brand", group: "sports", sub: "러닝/트레이닝", promoType: "sale", brand: "아식스",
+    title: "아식스 러닝화 여름 특가",
+    desc: "젤카야노·젤님버스 등 러닝화와 트레이닝 슈즈 시즌 특가.",
+    period: { start: "2026-07-01", end: "2026-07-31" }, posted: "2026-07-09", link: "https://www.asics.com/kr/ko-kr/" },
+  { id: 92, type: "brand", group: "sports", sub: "스포츠웨어", promoType: "sale", brand: "언더아머",
+    title: "언더아머 트레이닝 웨어 세일",
+    desc: "히트기어·컴프레션 등 트레이닝 웨어와 운동화 시즌 세일.",
+    period: { start: "2026-07-01", end: "2026-07-20" }, posted: "2026-07-09", link: "https://www.underarmour.co.kr/" },
+  { id: 93, type: "brand", group: "sports", sub: "운동화/스니커즈", promoType: "sale", brand: "FILA",
+    title: "FILA 여름 스니커즈·웨어 할인",
+    desc: "디스럽터 등 인기 스니커즈와 여름 스포츠웨어 할인.",
+    period: { start: "2026-07-01", end: "2026-07-25" }, posted: "2026-07-09", link: "https://www.fila.co.kr/" },
+  { id: 94, type: "brand", group: "sports", sub: "운동화/스니커즈", promoType: "sale", brand: "컨버스",
+    title: "컨버스 척테일러 시즌오프",
+    desc: "척 70·척테일러 올스타 등 클래식 스니커즈 시즌오프.",
+    period: { start: "2026-07-01", end: "2026-07-20" }, posted: "2026-07-09", link: "https://www.converse.co.kr/" },
+  { id: 95, type: "brand", group: "sports", sub: "운동화/스니커즈", promoType: "sale", brand: "반스",
+    title: "반스 여름 스니커즈 세일",
+    desc: "올드스쿨·어센틱 등 반스 클래식 스니커즈 여름 세일.",
+    period: { start: "2026-07-01", end: "2026-07-20" }, posted: "2026-07-09", link: "https://www.vans.co.kr/" },
+  { id: 96, type: "brand", group: "sports", sub: "아웃도어", promoType: "sale", brand: "데카트론",
+    title: "데카트론 여름 스포츠·아웃도어 특가",
+    desc: "러닝·등산·수영 등 전 스포츠 용품과 의류 가성비 특가.",
+    period: { start: "2026-07-01", end: "2026-07-31" }, posted: "2026-07-09", link: "https://www.decathlon.co.kr/" },
 ];
 
 // 각 브랜드 공식 페이지에서 추출한 대표 이미지(og:image). 로드 실패 시 모노그램으로 자동 대체.
@@ -491,6 +521,10 @@ const PROMO_IMAGES = {
   86: "https://static.skmagic.com/pc/asset/images/common/logo.jpg",
   87: "https://www.cuchen.com/img/1200.png",
   89: "https://www.nintendo.co.kr/sns.png",
+  // 스포츠 (91 아식스·92 언더아머·95 반스·96 데카트론: og 미확보 → 모노그램)
+  90: "https://images.puma.net/images/fn/~regional~JPN~others~KOP~NavPromo~FH20~OG_image_test.png/fmt/jpg",
+  93: "https://www.fila.co.kr/cdn/shop/files/1_87792c34-da59-46da-971d-e52664b893e7.jpg?v=1772691227",
+  94: "https://www.converse.co.kr/web/upload/seo_og_image.png",
 };
 
 // 전시용 지표 시드(실서비스에선 서버 집계값). id 기반 결정적 계산으로 매번 동일.

@@ -12,6 +12,7 @@ const CATEGORIES = {
       { id: "tech",      label: "테크",   icon: "tech",      tint: "#E3E8F1", ink: "#3E5C8A", sub: ["스마트폰/주변기기", "노트북/PC", "웨어러블", "음향기기"] },
       { id: "food",      label: "식품",   icon: "food",      tint: "#F1EBDD", ink: "#8A6A3A", sub: ["신선식품", "가공식품", "간편식", "음료"] },
       { id: "fashion",   label: "의류",   icon: "fashion",   tint: "#EAE6E1", ink: "#6E6257", sub: ["여성의류", "남성의류", "언더웨어", "패션잡화"] },
+      { id: "sports",    label: "스포츠", icon: "sports",    tint: "#E3ECEA", ink: "#2F6F63", sub: ["운동화/스니커즈", "스포츠웨어", "러닝/트레이닝", "아웃도어"] },
       { id: "appliance", label: "가전",   icon: "appliance", tint: "#E6E9EC", ink: "#4C5B66", sub: ["대형가전", "주방가전", "생활가전", "계절가전"] },
       { id: "homedeco",  label: "홈데코", icon: "homedeco",  tint: "#EEE8DE", ink: "#7A6A52", sub: ["가구", "조명", "인테리어소품", "침구"] },
     ],

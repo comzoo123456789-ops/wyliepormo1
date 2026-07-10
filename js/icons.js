@@ -13,6 +13,8 @@ const ICONS = {
     '<path d="M9 4l3 2 3-2 5 4-2.5 2.5L18 9.5V21H6V9.5L4.5 10.5 2 8l5-4"/>',
   appliance:
     '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16"/><path d="M7 6h.01M10 6h.01"/><path d="M7 13v4"/>',
+  sports:
+    '<path d="M7 4h10v3.5a5 5 0 0 1-10 0V4Z"/><path d="M17 5h2.5v1.5a3 3 0 0 1-3 3M7 5H4.5v1.5a3 3 0 0 0 3 3"/><path d="M9.5 13.5h5M12 13.5V17M8.5 21h7l-.5-2.5h-6L8.5 21Z"/>',
   homedeco:
     '<path d="M4 11V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/><path d="M3 11a2 2 0 0 1 2 2v3h14v-3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v6H1v-6a2 2 0 0 1 2-2Z"/><path d="M5 21v1M19 21v1"/>',
   localFood:

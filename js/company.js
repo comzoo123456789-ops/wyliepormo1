@@ -11,7 +11,8 @@ const AGE_LABELS = ["20대", "30대", "40대", "50대"];
 const AGE_W = {
   health: [0.10, 0.20, 0.30, 0.40], beauty: [0.42, 0.33, 0.18, 0.07],
   tech: [0.30, 0.34, 0.24, 0.12], food: [0.22, 0.30, 0.28, 0.20],
-  fashion: [0.40, 0.33, 0.18, 0.09], appliance: [0.14, 0.28, 0.32, 0.26],
+  fashion: [0.40, 0.33, 0.18, 0.09], sports: [0.36, 0.34, 0.20, 0.10],
+  appliance: [0.14, 0.28, 0.32, 0.26],
   homedeco: [0.16, 0.34, 0.30, 0.20],
   "local-food": [0.30, 0.32, 0.24, 0.14], "local-beauty": [0.44, 0.32, 0.16, 0.08], "local-health": [0.30, 0.34, 0.24, 0.12],
 };
@@ -61,12 +62,20 @@ function metrics(brand, sub) {
   const mine = byBrand[brand] || 0;
   const share = (mine / totalV) * 100;
   // 경쟁사 "식별정보"는 노출하지 않음 — 우리 위치만(순위·평균 대비)
-  const sharesArr = Object.keys(byBrand).map((b) => (byBrand[b] / totalV) * 100);
-  const total = sharesArr.length;
-  const rank = sharesArr.filter((s) => s > share).length + 1;
-  const avgShare = total ? 100 / total : 0;
+  const posFrom = (map, mineViews) => {
+    const tv = Object.values(map).reduce((a, b) => a + b, 0) || 1;
+    const sh = (mineViews / tv) * 100;
+    const arr = Object.keys(map).map((k) => (map[k] / tv) * 100);
+    return { share: sh, rank: arr.filter((s) => s > sh).length + 1, total: arr.length, avgShare: arr.length ? 100 / arr.length : 0 };
+  };
+  const cat = posFrom(byBrand, byBrand[brand] || 0);
 
-  return { visitors, ages, totalClicks, avgCtr, share, rank, total, avgShare, primGid: prim.gid, primType: prim.type };
+  // 전체 카테고리 기준 위치 (모든 프로모션 대상)
+  const allByBrand = {};
+  PROMOS.forEach((p) => (allByBrand[p.brand] = (allByBrand[p.brand] || 0) + (p.views || 0)));
+  const overall = posFrom(allByBrand, allByBrand[brand] || 0);
+
+  return { visitors, ages, totalClicks, avgCtr, share: cat.share, cat, overall, primGid: prim.gid, primType: prim.type };
 }
 
 // ---------- 렌더 ----------
@@ -108,18 +117,26 @@ function renderDash() {
       <td class="co-age__bar"><span style="width:${Math.round((a.visitors / maxV) * 100)}%;background:${g.ink}"></span></td>
     </tr>`).join("") + `</tbody>`;
 
-  // 우리 위치 (경쟁사 식별정보 미노출)
-  $("coSovDesc").textContent = `${groupLabel(m.primType, m.primGid)} 카테고리 내 우리 브랜드 위치`;
-  const above = m.share >= m.avgShare;
-  $("coSov").innerHTML = `
-    <div class="co-pos">
-      <div class="co-pos__share">${m.share.toFixed(1)}<span>%</span></div>
-      <div class="co-pos__rows">
-        <div><span>카테고리 내 순위</span><b>${m.rank}위 / ${m.total}개 브랜드</b></div>
-        <div><span>카테고리 평균 점유율</span><b>${m.avgShare.toFixed(1)}%</b></div>
-        <div><span>평가</span><b class="${above ? "co-up" : "co-down"}">${above ? "평균 이상 ▲" : "평균 이하 ▼"}</b></div>
+  // 우리 위치 (경쟁사 식별정보 미노출) — 카테고리 기준 + 전체 기준
+  $("coSovDesc").textContent = "경쟁사 식별정보 없이, 우리 브랜드의 상대적 위치만 표시";
+  const posBlock = (title, x) => {
+    const above = x.share >= x.avgShare;
+    return `<div class="co-pos-col">
+      <div class="co-pos-col__h">${title}</div>
+      <div class="co-pos">
+        <div class="co-pos__share">${x.share.toFixed(1)}<span>%</span></div>
+        <div class="co-pos__rows">
+          <div><span>순위</span><b>${x.rank}위 / ${x.total}개</b></div>
+          <div><span>평균 점유율</span><b>${x.avgShare.toFixed(1)}%</b></div>
+          <div><span>평가</span><b class="${above ? "co-up" : "co-down"}">${above ? "평균 이상 ▲" : "평균 이하 ▼"}</b></div>
+        </div>
       </div>
     </div>`;
+  };
+  $("coSov").innerHTML = `<div class="co-pos-grid">
+    ${posBlock(`${groupLabel(m.primType, m.primGid)} 카테고리 기준`, m.cat)}
+    ${posBlock("전체 카테고리 기준", m.overall)}
+  </div>`;
 
   // 내 프로모션 목록 (제품군 필터 적용)
   let mine = brandPromos(b);
